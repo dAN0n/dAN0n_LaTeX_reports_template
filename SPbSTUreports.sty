@@ -1,0 +1,181 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{SPbSTUreports}[02/18/2016 SPbSTU reports template v2]
+
+%% ОСНОВНЫЕ ПАКЕТЫ %%
+
+	\RequirePackage{geometry}					% Отступы
+	\geometry{									% Настройка отступов
+		a4paper,
+		left=20mm,
+		right=10mm,
+		top=15mm,
+		bottom=15mm,
+	}
+	\RequirePackage[english,russian]{babel}		% Для русского оформления
+	\selectlanguage{russian}					% Язык для babel
+	\RequirePackage[T2A,T1]{fontenc}			% Кодировка шрифтов
+	\RequirePackage[utf8]{inputenc}				% Для поддержки кириллицы
+	\RequirePackage[pdftex]{graphicx}			% Для создания pdf
+	\RequirePackage{amsthm,amssymb,amsmath}		% Математические выражения
+	\RequirePackage{mathtools}					% Всякие мелочи для математики
+	\RequirePackage[labelsep=period]{caption}	% Для рис. и табл.
+	\RequirePackage{indentfirst}				% Отступ (красная строка)
+	\RequirePackage{mmap}						% Поиск и копирование в pdf
+	\pdfcompresslevel=9							% pdf сжатие
+	\graphicspath{{img/}}						% Папка для изображений
+
+%% ЗАГОЛОВКИ %%
+
+	\RequirePackage{titlesec}	% Дополнительные возможности секционирования
+	\RequirePackage{titletoc}	% Дополнительные возможности содержания
+
+	% Настройка titlesec
+		\titleformat{\section}{\normalsize\bfseries}{\thesection}{1em}{}
+		\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
+		\titleformat{\subsubsection}{\normalsize}{\thesubsubsection}{1em}{}
+
+%% ТАБЛИЦЫ/КАРТИНКИ %%
+
+	\RequirePackage{supertabular}	% Для длинных многостраничных таблиц
+	\RequirePackage{multirow}		% Для объединения строк
+	\RequirePackage{tabularx}		% Окружение для использования опции x для центрирования
+	\RequirePackage{float}			% Используется для опции [H]
+
+	% Настройка chngcntr
+		\RequirePackage{chngcntr}		% Картинки/таблицы нумеруются по секциям
+		\counterwithin{figure}{section}	% Настройка пакета chngcntr
+		\counterwithin{table}{section}
+		%\counterwithin{figure}{subsection}
+		%\counterwithin{table}{subsection}
+
+	% Настройка subcaption
+		\RequirePackage{subcaption}							% Несколько картинок в одной
+		\renewcommand{\thesubfigure}{\asbuk{subfigure}}		% Русские буквы в подписях subcaption
+		\DeclareCaptionLabelFormat{r-parens}{\textbf{#2)}}	% Стилизация subcaption
+		\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+		\captionsetup{font=normalsize}	% Основные настройки подписей
+		\captionsetup[sub]{				% Настройки подподписей
+		    font=small,					% Сделать шрифт меньше для текста и label
+		%    textfont=sl,				% Сделать только текст подписи наклонным
+		    labelformat=r-parens}		% Вызов этой настройки
+
+%% ЛИСТИНГИ %%
+
+	\RequirePackage{verbatim}	% Для простых листингов
+	\RequirePackage{listings}	% Листинги (куча проблем)
+
+%% ГРАФИКИ %%
+
+	\RequirePackage{pgfplots}	% Для графиков (сложен и неудобен почти всегда)
+	\pgfplotsset{compat=1.12}	% Принудительное использование данной версии
+
+%% ОСТАЛЬНОЕ %%
+
+	\RequirePackage{newclude}				% include*{} убирает \clearpage
+	\RequirePackage{color}					% Управление цветом
+	\RequirePackage[
+				unicode,
+				bookmarks=true,
+				%allbordercolors=red,
+				allbordercolors=blue,
+				urlbordercolor=blue,
+				pdfborderstyle={/S/U/W 1}
+	]{hyperref}								% Гиперссылки
+	\RequirePackage[numbered]{bookmark}		% Закладки
+	\RequirePackage{enumerate}				% Расширенные возможности перечислений
+	\RequirePackage{soulutf8}				% Для пакета soul
+	\RequirePackage{soul} 					% Зачеркивания
+	\RequirePackage{cancel} 				% Зачеркивания (диагональные)
+	\RequirePackage{ifthen}					% Условия
+	%\RequirePackage{fixltx2e}				% Для \textsubscript (конфликтует с float), используйте \text(up)(it)...
+
+%% ШАБЛОН ТИТУЛЬНОГО ЛИСТА %%
+
+	% Use \usepackage{titlepattern} for calling
+	% and \papertype{}, \lessontype{} and so on in preamble 
+	% Используйте \maketitle для вызова, при сборке без необходимых команд в преамбуле
+	% они будут отображены на листе с пояснением.
+	% Дополнительная команда: \titleright{} для сдвига области имен
+
+	\newcommand*{\student}[1]{\gdef\@student{#1}}
+	\newcommand*{\@student}{\texttt{\string\student\{\}}}
+
+	\newcommand*{\studentt}[1]{\gdef\@studentt{#1}}
+	\newcommand*{\@studentt}{\texttt{\string\studentt\{\}}}
+
+	\newcommand*{\papertype}[1]{\gdef\@papertype{#1}}
+	\newcommand*{\@papertype}{\texttt{\string\papertype\{\}} (в дат. п.)}
+
+	\newcommand*{\lessontype}[1]{\gdef\@lessontype{#1}}
+	\newcommand*{\@lessontype}{\texttt{\string\lessontype\{\}}}
+	
+	\newcommand*{\theme}[1]{\gdef\@theme{#1}}
+	\newcommand*{\@theme}{\texttt{\string\theme\{\}}}
+
+	\newcommand*{\teacher}[1]{\gdef\@teacher{#1}}
+	\newcommand*{\@teacher}{\texttt{\string\teacher\{\}}}
+
+	\newcommand*{\titleright}[1]{\gdef\@titleright{#1}}
+	\newcommand*{\@titleright}{10}
+
+	\renewcommand*{\maketitle}{%
+	\begin{titlepage}
+	\begin{center}
+	% Шапка
+	Санкт-Петербургский государственный политехнический \\ университет Петра Великого \\[0.1cm]
+	Кафедра компьютерных систем и программных технологий \\[9cm]
+	% Основная часть
+	\textbf{Отчет по \@papertype\unskip\strut}\\[0.1cm]
+	\textbf{Дисциплина:} \@lessontype\unskip\strut \\[0.1cm]
+	\textbf{Тема:} \@theme\unskip\strut
+	\end{center}
+	\vfill
+	% Имена/подписи
+	\ifthenelse{\equal{\@studentt}{\texttt{\string\studentt\{\}}}}{
+		\ifthenelse{\equal{\@student}{\texttt{\string\student\{\}}}}{
+			\flushleft{Выполнили студенты гр. 33501/3} 
+			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
+
+			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@studentt\unskip\strut}\\[0.6cm]
+		}{
+			\flushleft{Выполнил студент гр. 33501/3} 
+			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
+		}
+	}{
+		\flushleft{Выполнили студенты гр. 33501/3} 
+		\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
+
+		\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@studentt\unskip\strut}\\[0.6cm]
+	}
+
+	\flushleft{Преподаватель} \hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@teacher\unskip\strut}\\[0.6cm]
+
+	\hfill\parbox{10cm}{\hspace*{3cm}``\rule{0.7cm}{0.8pt}''\rule{3cm}{0.8pt}~\the\year~г.}
+	\vfill
+	\begin{center}
+	% Bottom of the page
+	Санкт-Петербург \par
+	\the\year~г.
+	\end{center}
+	\end{titlepage}
+	\setcounter{page}{2}
+	}
+
+%% ПРИЛОЖЕНИЯ %%
+
+% !!	Не работают русские буквы, поэтому пока используются английские		!! %
+% !!	Не работает капитализация слова "Приложение"						!! %
+% !!	Требуется две компиляции для создания								!! %
+\makeatletter
+\renewcommand\appendixname{ПРИЛОЖЕНИЕ}
+\def\redeflsection{\def\l@section{\@dottedtocline{1}{1.5em}{7.8em}}}
+\renewcommand\appendix{\par
+\setcounter{section}{0}%
+\setcounter{subsection}{0}%
+\def\@chapapp{\appendixname}%
+\addtocontents{toc}{\protect\redeflsection}
+\def\thesection{\appendixname\hspace{0.2cm}\@Alph\c@section}}
+\makeatother
+
+\endinput

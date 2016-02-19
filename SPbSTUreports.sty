@@ -92,8 +92,6 @@
 
 %% ШАБЛОН ТИТУЛЬНОГО ЛИСТА %%
 
-	% Use \usepackage{titlepattern} for calling
-	% and \papertype{}, \lessontype{} and so on in preamble 
 	% Используйте \maketitle для вызова, при сборке без необходимых команд в преамбуле
 	% они будут отображены на листе с пояснением.
 	% Дополнительная команда: \titleright{} для сдвига области имен
@@ -163,21 +161,52 @@
 	}
 
 %% ПРИЛОЖЕНИЯ %%
+	
+	% Используйте окружение \begin{append} и \section для приложений
+	% Реализовано добавление подсекции и автоперенос на следующую страницу
+	% Использует пакет appendix
+	% Требуется две компиляции для верного отображения
 
-% !!	Требуется две компиляции для создания								!! %
-% !!	Не реализована ссылка типа <буква>									!! %
+	\RequirePackage[title,titletoc]{appendix}
 
-\RequirePackage{tocloft}
-\renewcommand{\appendixname}{Приложение}
-
-\newcommand{\appendixrus}{ 
-    \clearpage
-	\appendix
-	\addtocontents{toc}{\def\protect\cftsecpresnum{}%
-		\setlength{\cftsecnumwidth}{\widthof{\cftsecfont\appendixname~Ш\cftsecaftersnum}}%
+	\newenvironment{append}{%
+		\clearpage
+		\begin{appendices}
+		\newcommand{\sectionbreak}{\clearpage}
+		\titleformat{\section}{\normalsize\bfseries}{Приложение~\thesection}{1em}{}
+		\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
+		\renewcommand{\appendixname}{Приложение}
+		\renewcommand{\thesection}{\Asbuk{section}} 
+	}{
+		\end{appendices}
 	}
 
-	\renewcommand\thesection{Приложение~\Asbuk{section}}
-}
+	% Взято отсюда: http://tex.stackexchange.com/questions/41649/how-to-make-appendix-and-hyperref-packages-work-together-with-cyrillic-non-asci
+	\makeatletter
+	\let\oriAlph\Alph
+	\let\orialph\alph
+	\renewcommand{\@resets@pp}{\par
+		\@ppsavesec
+		\stepcounter{@pps}
+		\setcounter{section}{0}%
+		\if@chapter@pp
+			\setcounter{chapter}{0}%
+			\renewcommand\@chapapp{\appendixname}%
+			\renewcommand\thechapter{\@Alph\c@chapter}%
+		\else
+			\setcounter{subsection}{0}%
+			\renewcommand\thesection{\@Alph\c@section}%
+		\fi
+		\if@pphyper
+			\if@chapter@pp
+				\renewcommand{\theHchapter}{\theH@pps.\oriAlph{chapter}}%
+			\else
+				\renewcommand{\theHsection}{\theH@pps.\oriAlph{section}}%
+			\fi
+			\def\Hy@chapapp{appendix}%
+		\fi
+		\restoreapp
+	}
+	\makeatother
 
 \endinput

@@ -37,7 +37,7 @@ escapeinside={\%*}{*)}			% если нужно добавить коммента
 }
 
 Описание схемы на языке VHDL приведено в листинге \ref{lst:VHDL}.
-См.~\ref{app:matlab} для ещё одного примера.
+См. приложение~\ref{app:matlab} для ещё одного примера.
 
 \begin{lstlisting}[label=lst:VHDL,caption=Описание схемы]
 entity lab2 is
@@ -197,9 +197,7 @@ end rtl;
 
 \subsection{Графики с pgfplots/tikZ}
 
-Слишком потно, надо очень хорошо знать, что делаешь, иначе можно потратить день и не добиться результата.
-
-В документации 600 страниц, Карл!!!
+Слишком потно, надо очень хорошо знать, что делаешь, иначе можно потратить день и не добиться результата. В документации 600 страниц, Карл!!!
 
 \begin{figure}[h]
 	\begin{subfigure}{.5\linewidth}\centering
@@ -376,54 +374,51 @@ u_4\leq 0;\\
 $\begin{aligned}
 	&2-6, 6-5, 1-4, 4-3 \Rightarrow \xcancel{6-2}, \xcancel{5-6}, \xcancel{5-2}, \xcancel{4-1}, \xcancel{4-2}, \xcancel{3-4}, \xcancel{3-1} \\
 	&G_{2-6;6-5;1-4}=G_{2-6;6-5;1-4;4-3}\cup G_{2-6;6-5;1-4;\overline{4-3}} \\
-	&V\left(G_{2-6;6-5;1-4;\overline{4-3}} \right)=83+5=88
 \end{aligned}$ \\
 
 Нельзя использовать зачёркивания пакета $cancel$ с самого первого слова: \\
 
 \mbox{}\bcancel{Ещё} \cancel{такие} \st{вот} \xcancel{иногда} $\cancelto{\textup{варианты}}{\textup{есть}}$.
 
-\clearpage
-\appendixrus
+\begin{append}
+	
+	\section{Ещё один пример листинга} \label{app:matlab}
 
-\section{Ещё один пример листинга} \label{app:matlab}
+	\lstset{language=Matlab,
+		inputencoding=cp1251,
+		basicstyle=\small\sffamily, 
+	    breaklines=true,
+	    morekeywords={matlab2tikz},
+	    keywordstyle=\color{blue},
+	    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+	    identifierstyle=\color{black},
+	    stringstyle=\color{mylilas},
+	    commentstyle=\color{mygreen},
+	    showstringspaces=false,
+	    numbers=left,
+	    numberstyle={\tiny \color{black}},
+	    numbersep=5pt,
+	    emph=[1]{for,break},emphstyle=[1]\color{red},
+	    frame=single,
+	    stepnumber=5,
+	}
 
-\lstset{language=Matlab,
-	inputencoding=cp1251,
-	basicstyle=\small\sffamily, 
-    breaklines=true,
-    morekeywords={matlab2tikz},
-    keywordstyle=\color{blue},
-    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
-    identifierstyle=\color{black},
-    stringstyle=\color{mylilas},
-    commentstyle=\color{mygreen},
-    showstringspaces=false,
-    numbers=left,
-    numberstyle={\tiny \color{black}},
-    numbersep=5pt,
-    emph=[1]{for,break},emphstyle=[1]\color{red},
-    frame=single,
-    stepnumber=5,
-}
+	\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+	\definecolor{mylilas}{RGB}{170,55,241}
 
-\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
-\definecolor{mylilas}{RGB}{170,55,241}
+	\lstinputlisting{img/Main.m}
 
-\lstinputlisting{img/Main.m}
+	\section{Ссылка вида ``<буква>'' $\wedge$\_$\wedge$}
 
-\section{Ссылка вида ``Приложение <буква>'' ):}
+	Поставленные требования к оформлению приложений выполнены, за исключением капитализации, так как она смотрелась неуместно.
 
-Необходимо реализовать ссылку только по букве вместо ``Приложение \\ <буква>''.
+	\subsection{Одна подсекция}
 
-% \begin{appendices}
+	Вот она!
 
-% \append{Заголовок пункта приложения}
+	\subsection{Ещё одна подсекция}
 
-% Текст приложения.
+	\Huge\backslash O /
 
-% \section{Заголовок пункта приложения}
+\end{append}
 
-% Текст приложения.
-
-% \end{appendices}

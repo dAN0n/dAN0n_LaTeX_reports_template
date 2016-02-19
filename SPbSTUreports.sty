@@ -22,7 +22,7 @@
 	\RequirePackage{indentfirst}				% Отступ (красная строка)
 	\RequirePackage{mmap}						% Поиск и копирование в pdf
 	\pdfcompresslevel=9							% pdf сжатие
-	\graphicspath{{img/}}						% Папка для изображений
+	\graphicspath{{img/}}						% Папка для изображений	
 
 %% ЗАГОЛОВКИ %%
 
@@ -164,18 +164,20 @@
 
 %% ПРИЛОЖЕНИЯ %%
 
-% !!	Не работают русские буквы, поэтому пока используются английские		!! %
-% !!	Не работает капитализация слова "Приложение"						!! %
 % !!	Требуется две компиляции для создания								!! %
-\makeatletter
-\renewcommand\appendixname{ПРИЛОЖЕНИЕ}
-\def\redeflsection{\def\l@section{\@dottedtocline{1}{1.5em}{7.8em}}}
-\renewcommand\appendix{\par
-\setcounter{section}{0}%
-\setcounter{subsection}{0}%
-\def\@chapapp{\appendixname}%
-\addtocontents{toc}{\protect\redeflsection}
-\def\thesection{\appendixname\hspace{0.2cm}\@Alph\c@section}}
-\makeatother
+% !!	Не реализована ссылка типа <буква>									!! %
+
+\RequirePackage{tocloft}
+\renewcommand{\appendixname}{Приложение}
+
+\newcommand{\appendixrus}{ 
+    \clearpage
+	\appendix
+	\addtocontents{toc}{\def\protect\cftsecpresnum{}%
+		\setlength{\cftsecnumwidth}{\widthof{\cftsecfont\appendixname~Ш\cftsecaftersnum}}%
+	}
+
+	\renewcommand\thesection{Приложение~\Asbuk{section}}
+}
 
 \endinput

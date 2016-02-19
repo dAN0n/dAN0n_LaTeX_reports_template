@@ -102,6 +102,12 @@
 	\newcommand*{\studentt}[1]{\gdef\@studentt{#1}}
 	\newcommand*{\@studentt}{\texttt{\string\studentt\{\}}}
 
+	\newcommand*{\group}[1]{\gdef\@group{#1}}
+	\newcommand*{\@group}{\texttt{\string\group\{\}}}
+
+	\newcommand*{\teacher}[1]{\gdef\@teacher{#1}}
+	\newcommand*{\@teacher}{\texttt{\string\teacher\{\}}}
+
 	\newcommand*{\papertype}[1]{\gdef\@papertype{#1}}
 	\newcommand*{\@papertype}{\texttt{\string\papertype\{\}} (в дат. п.)}
 
@@ -110,9 +116,6 @@
 	
 	\newcommand*{\theme}[1]{\gdef\@theme{#1}}
 	\newcommand*{\@theme}{\texttt{\string\theme\{\}}}
-
-	\newcommand*{\teacher}[1]{\gdef\@teacher{#1}}
-	\newcommand*{\@teacher}{\texttt{\string\teacher\{\}}}
 
 	\newcommand*{\titleright}[1]{\gdef\@titleright{#1}}
 	\newcommand*{\@titleright}{10}
@@ -130,21 +133,14 @@
 	\end{center}
 	\vfill
 	% Имена/подписи
-	\ifthenelse{\equal{\@studentt}{\texttt{\string\studentt\{\}}}}{
-		\ifthenelse{\equal{\@student}{\texttt{\string\student\{\}}}}{
-			\flushleft{Выполнили студенты гр. 33501/3} 
+	\ifthenelse{\not\equal{\@studentt}{\texttt{\string\studentt\{\}}} \OR \equal{\@student}{\texttt{\string\student\{\}}}}{
+			\flushleft{Выполнили студенты гр. \@group\unskip\strut} 
 			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
 
 			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@studentt\unskip\strut}\\[0.6cm]
 		}{
-			\flushleft{Выполнил студент гр. 33501/3} 
+			\flushleft{Выполнил студент гр. \@group\unskip\strut} 
 			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
-		}
-	}{
-		\flushleft{Выполнили студенты гр. 33501/3} 
-		\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
-
-		\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@studentt\unskip\strut}\\[0.6cm]
 	}
 
 	\flushleft{Преподаватель} \hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@teacher\unskip\strut}\\[0.6cm]

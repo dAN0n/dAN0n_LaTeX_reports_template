@@ -4,7 +4,7 @@
 
 Рандомный граф (рис.~\ref{pic:graph}). 
 
-Для насильной привязки к месту использовать опцию [H].
+Для насильной привязки к месту использовать опцию [H].\cite{float}
 
 \begin{figure}[ht]
 	\centering
@@ -15,7 +15,7 @@
 
 \subsection{Листинг с помощью listings}
 
-Ад на земле.
+Ад на земле. Пакет listings имеет кучу мелких и не очень проблем, из-за которых пропадает желание его использовать.
 
 \lstset{ %
 language=VHDL,					% выбор языка для подсветки (здесь это С)
@@ -61,7 +61,7 @@ end rtl;
 
 \subsection{Картинки с подкартинками}
 
-Данные о максимальной частоте и минимальных временных задержках представлены на рис. \ref{pic:base} (а так же рис.~\ref{pic:fmax} и рис.~\ref{pic:clk}).
+Данные о максимальной частоте и минимальных временных задержках представлены на рис. \ref{pic:base} (а так же рис.~\ref{pic:fmax} и рис.~\ref{pic:clk}).\cite{subcap}
 
 \begin{figure}[h]
 	\begin{subfigure}{.4\linewidth}\centering
@@ -176,7 +176,7 @@ end rtl;
 
 \subsection{Таблица с склееными и битыми ячейками}
 
-Пример в табл.~\ref{tab:energy}.
+Пример в табл.~\ref{tab:energy}. Для склеивания строк требуется пакет \textit{multirow}.\cite{multirow}
 
 \begin{table}[H]
 \centering
@@ -195,9 +195,9 @@ end rtl;
 \label{tab:energy}
 \end{table}
 
-\subsection{Графики с pgfplots/tikZ}
+\subsection{Графики с TikZ/PGF}
 
-Слишком потно, надо очень хорошо знать, что делаешь, иначе можно потратить день и не добиться результата. В документации 600 страниц, Карл!!!
+Слишком потно, надо очень хорошо знать, что делаешь, иначе можно потратить день и не добиться результата. В документации 1200 страниц, Карл!!!\cite{pgf}
 
 \begin{figure}[h]
 	\begin{subfigure}{.5\linewidth}\centering
@@ -242,7 +242,7 @@ end rtl;
 
 \subsection{Надписи на стрелках}
 
-Использует пакет $mathtools$.
+Использует пакет $mathtools$.\cite{mathtools}
 
 \begin{table}[h!t]
 \centering
@@ -376,12 +376,12 @@ $\begin{aligned}
 	&G_{2-6;6-5;1-4}=G_{2-6;6-5;1-4;4-3}\cup G_{2-6;6-5;1-4;\overline{4-3}} \\
 \end{aligned}$ \\
 
-Нельзя использовать зачёркивания пакета $cancel$ с самого первого слова: \\
+Нельзя использовать зачёркивания пакета $cancel$\cite{cancel} с самого первого слова: \\
 
-\mbox{}\bcancel{Ещё} \cancel{такие} \st{вот} \xcancel{иногда} $\cancelto{\textup{варианты}}{\textup{есть}}$.
+\mbox{}\bcancel{Ещё} \cancel{такие} \st{вот}\cite{soul} \xcancel{иногда} $\cancelto{\textup{варианты}}{\textup{есть}}$.
 
 \subsection{Создание списка литературы}
 
-Для этого можно использовать \textit{BiBLaTeX+Biber}.\cite{modelcheck}
+Для этого можно использовать \textit{BiBLaTeX+Biber}.\cite{biblatex}
 
-Создаёт и нумерует ссылки в порядке их упоминания.\cite{shosh} Стиль по ГОСТу (\textit{gost-numeric} в данном шаблоне) и его использование можно почитать в описании стиля.\cite{gost}
+Создаёт и нумерует ссылки в порядке их упоминания.\cite{modelcheck} Стиль по ГОСТу (\textit{gost-numeric} в данном шаблоне) и его использование можно прочитать в описании стиля.\cite{gost}

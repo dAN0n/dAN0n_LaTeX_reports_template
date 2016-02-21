@@ -220,8 +220,8 @@
 	% Для создания библиографической базы рекомендуется использовать JabRef
 	% Создать область наиболее часто используемых полей для заполнения можно, добавив в меню
 	% Options -> Set up general fields следующие строки (без %):
-	% biber:title;author;year;publisher;address;language;pagetotal;pages;media;url;urldate;note
-	% biber_misc:editor;translator;edition;version;volumes;books;parts
+	% biber:title;author;year;publisher;address;language;langid;pagetotal;media;url;urldate;bibtexkey
+	% biber_misc:pages;note;editor;translator;edition;version;volumes;books;parts
 
 	\usepackage{csquotes}
 	\usepackage[%
@@ -232,8 +232,8 @@
 		minbibnames=2,							% Число авторов, отображаемое при сокращении.
 		style=gost-numeric,						% Стиль
 		backend=biber,							% Использование biber вмето BiBTeX
-		backref,								% Указание на место цитирования
-		backrefstyle=two						% Компрессия страниц указаний на место цитирования
+%		backref,								% Указание на место цитирования
+%		backrefstyle=two						% Компрессия страниц указаний на место цитирования
 	]{biblatex}									% Библиография
 
 	\newcommand*{\lib}{%

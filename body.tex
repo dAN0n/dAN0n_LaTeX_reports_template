@@ -380,6 +380,17 @@ $\begin{aligned}
 
 \mbox{}\bcancel{Ещё} \cancel{такие} \st{вот} \xcancel{иногда} $\cancelto{\textup{варианты}}{\textup{есть}}$.
 
+\section{Создание списка литературы}
+
+Для этого можно использовать \textit{BiBLaTeX+Biber}.\cite{modelcheck}
+
+Создаёт и нумерует ссылки в порядке их упоминания.\cite{shosh} Стиль по ГОСТу (\textit{gost-numeric} в данном шаблоне) и его использование можно почитать в описании стиля.\cite{gost}
+
+\newpage
+\phantomsection
+\addcontentsline{toc}{section}{Список литературы} 
+\printbibliography
+
 \begin{append}
 	
 	\section{Ещё один пример листинга} \label{app:matlab}
@@ -406,7 +417,7 @@ $\begin{aligned}
 	\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
 	\definecolor{mylilas}{RGB}{170,55,241}
 
-	\lstinputlisting{img/Main.m}
+	\lstinputlisting[firstline=1, lastline=91]{code/Main.m}
 
 	\section{Ссылка вида ``<буква>'' $\wedge$\_$\wedge$}
 

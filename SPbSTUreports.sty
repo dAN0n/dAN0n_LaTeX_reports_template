@@ -23,6 +23,18 @@
 	\RequirePackage{mmap}						% Поиск и копирование в pdf
 	\pdfcompresslevel=9							% pdf сжатие
 	\graphicspath{{img/}}						% Папка для изображений	
+	\usepackage{csquotes}
+	\usepackage[
+		autolang=other,							% Язык
+		bibencoding=utf8,						% Кодировка
+		sorting=none,							% Name,Title,Year или sorting=none.
+		maxbibnames=4,							% Максимальное число авторов в списке литературы.
+		minbibnames=2,							% Число авторов, отображаемое при сокращении.
+		style=gost-numeric,						% Стиль
+		backend=biber,							% Использование biber вмето BiBTeX
+		backref,								% Указание на место цитирования
+		backrefstyle=two						% Компрессия страниц указаний
+	]{biblatex}									% Библиография
 
 %% ЗАГОЛОВКИ %%
 

@@ -380,56 +380,8 @@ $\begin{aligned}
 
 \mbox{}\bcancel{Ещё} \cancel{такие} \st{вот} \xcancel{иногда} $\cancelto{\textup{варианты}}{\textup{есть}}$.
 
-\section{Создание списка литературы}
+\subsection{Создание списка литературы}
 
 Для этого можно использовать \textit{BiBLaTeX+Biber}.\cite{modelcheck}
 
 Создаёт и нумерует ссылки в порядке их упоминания.\cite{shosh} Стиль по ГОСТу (\textit{gost-numeric} в данном шаблоне) и его использование можно почитать в описании стиля.\cite{gost}
-
-\newpage
-\phantomsection
-\addcontentsline{toc}{section}{Список литературы} 
-\printbibliography
-
-\begin{append}
-	
-	\section{Ещё один пример листинга} \label{app:matlab}
-
-	\lstset{language=Matlab,
-		inputencoding=cp1251,
-		basicstyle=\small\sffamily, 
-	    breaklines=true,
-	    morekeywords={matlab2tikz},
-	    keywordstyle=\color{blue},
-	    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
-	    identifierstyle=\color{black},
-	    stringstyle=\color{mylilas},
-	    commentstyle=\color{mygreen},
-	    showstringspaces=false,
-	    numbers=left,
-	    numberstyle={\tiny \color{black}},
-	    numbersep=5pt,
-	    emph=[1]{for,break},emphstyle=[1]\color{red},
-	    frame=single,
-	    stepnumber=5,
-	}
-
-	\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
-	\definecolor{mylilas}{RGB}{170,55,241}
-
-	\lstinputlisting[firstline=1, lastline=91]{code/Main.m}
-
-	\section{Ссылка вида ``<буква>'' $\wedge$\_$\wedge$}
-
-	Поставленные требования к оформлению приложений выполнены, за исключением капитализации, так как она смотрелась неуместно.
-
-	\subsection{Одна подсекция}
-
-	Вот она!
-
-	\subsection{Ещё одна подсекция}
-
-	\Huge$\backslash O /$
-
-\end{append}
-

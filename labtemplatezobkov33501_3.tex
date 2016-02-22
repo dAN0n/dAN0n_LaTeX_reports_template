@@ -1,8 +1,8 @@
 % НЕ ЗАБЫВАЙТЕ МЕНЯТЬ ИМЯ ОСНОВНОГО ФАЙЛА В ПЕРВЫХ СТРОЧКАХ ВКЛЮЧАЕМЫХ ФАЙЛОВ,
-% ЭТО УПРОЩАЕТ НАВИГАЦИЮ ПО ПРОЕКТУ!!!
-\documentclass[oneside,final,14pt]{extarticle}	% Тип документа
-\usepackage{SPbSTUreports}						% Стилевой файл
-\addbibresource{bibl/ref.bib}						% Файл библиографической базы
+% ЭТО УПРОЩАЕТ НАВИГАЦИЮ И РАБОТУ С ПРОЕКТОМ!!!
+\documentclass[oneside,final,14pt]{extarticle}				% Тип документа
+\usepackage{SPbSTUreports}									% Стилевой файл
+\addbibresource{bibl/ref.bib}								% Файл библиографической базы
 
 %% ЗАПОЛНЕНИЕ ТИТУЛЬНОГО ЛИСТА %%
 \student{Д. А. Зобков}
@@ -12,21 +12,22 @@
 \papertype{лабораторной работе}
 \lessontype{Телекоммуникационные технологии}
 \theme{Cистема верстки \TeX~и расширения \LaTeX~(Шаблон для отчётов)}
+% \titleright{10}
 
-% \includeonly{}								% Компиляция части отчета
+% \includeonly{}											% Компиляция части отчета
 
 \begin{document}
 
-	\maketitle									% Генерация титульного листа
-	\toc										% Генерация оглавления							
+	\maketitle												% Генерация титульного листа
+	\toc													% Генерация оглавления
 
 	\include*{sections/goaltask}							% Цель работы/Постановка задачи
-	\include*{sections/theory}							% Теоретический раздел
-	\include*{sections/lab}								% Ход работы
-	\include*{sections/conclusion}						% Выводы
+	\include*{sections/theory}								% Теоретический раздел
+	\include*{sections/lab}									% Ход работы
+	\include*{sections/conclusion}							% Выводы
 
 	\include*{sections/body}								% Cлучаи из практики автора шаблона
-	\lib										% Генерация списка литературы
+	\lib													% Генерация списка литературы
 	\include*{sections/appendix}							% Приложения
 
 \end{document}

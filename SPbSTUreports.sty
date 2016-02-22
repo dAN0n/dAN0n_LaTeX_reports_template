@@ -22,29 +22,55 @@
 	\RequirePackage{indentfirst}				% Отступ (красная строка)
 	\RequirePackage{mmap}						% Поиск и копирование в pdf
 	\pdfcompresslevel=9							% pdf сжатие
-	\graphicspath{{img/}}						% Папка для изображений	
+	\graphicspath{{img/}}						% Папка для изображений		
 
-%% ЗАГОЛОВКИ %%
+%% ЗАГОЛОВКИ И ТЕКСТ %%
 
 	\RequirePackage{titlesec}	% Дополнительные возможности секционирования
 	\RequirePackage{titletoc}	% Дополнительные возможности содержания
+	\RequirePackage{fancyhdr}	% Колонтитулы
 
 	% Настройка titlesec
 		\titleformat{\section}{\normalsize\bfseries}{\thesection}{1em}{}
 		\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
 		\titleformat{\subsubsection}{\normalsize}{\thesubsubsection}{1em}{}
 
+	% Настройка fancyhdr
+		\renewcommand{\headrulewidth}{0pt}	% Отключает полосу сверху
+		\pagestyle{fancy}					% Включение пакета fancyhdr
+		\lhead{}							% Пусто вверху слева
+		\chead{}							% Пусто вверху по центру
+		\rhead{}							% Пусто вверху справа
+		\lfoot{}							% Пусто вверху слева
+		\cfoot{}							% Пусто вверху по центру
+		\rfoot{\thepage}					% Номер страницы внизу справа
+
+	\RequirePackage{setspace}				% Интерлиньяж
+	% \onehalfspacing						% Интерлиньяж 1.5
+	% \doublespacing						% Интерлиньяж 2
+	% \singlespacing						% Интерлиньяж 1
+
+%% ЛИСТИНГИ %%
+
+	\RequirePackage{verbatim}	% Для простых листингов
+	\RequirePackage{listings}	% Листинги (куча проблем)
+	% Надо потестить пакет minted
+
 %% ТАБЛИЦЫ/КАРТИНКИ %%
 
 	\RequirePackage{supertabular}	% Для длинных многостраничных таблиц
 	\RequirePackage{multirow}		% Для объединения строк
+	\RequirePackage{multicol}		% Несколько колонок
 	\RequirePackage{tabularx}		% Окружение для использования опции x для центрирования
 	\RequirePackage{float}			% Используется для опции [H]
 
 	% Настройка chngcntr
-		\RequirePackage{chngcntr}		% Картинки/таблицы нумеруются по секциям
-		\counterwithin{figure}{section}	% Настройка пакета chngcntr
+		\numberwithin{equation}{section}	% Формулы нумеруются по секциям (amsmath)
+		% \mathtoolsset{showonlyrefs=true}	% Номера только у формул, на которые есть \eqref{}
+		\RequirePackage{chngcntr}			% Картинки/таблицы нумеруются по секциям
+		\counterwithin{figure}{section}		% Настройка пакета chngcntr
 		\counterwithin{table}{section}
+		\AtBeginDocument{\counterwithin{lstlisting}{section}}
 		%\counterwithin{figure}{subsection}
 		%\counterwithin{table}{subsection}
 
@@ -60,11 +86,6 @@
 		%    textfont=sl,				% Сделать только текст подписи наклонным
 		    labelformat=r-parens}		% Вызов этой настройки
 
-%% ЛИСТИНГИ %%
-
-	\RequirePackage{verbatim}	% Для простых листингов
-	\RequirePackage{listings}	% Листинги (куча проблем)
-
 %% ГРАФИКИ %%
 
 	\RequirePackage{pgfplots}	% Для графиков (сложен и неудобен почти всегда)
@@ -74,6 +95,7 @@
 
 	\RequirePackage{newclude}				% include*{} убирает \clearpage
 	\RequirePackage{color}					% Управление цветом
+	\RequirePackage[russian]{varioref}		% Умные указания страниц
 	\RequirePackage[
 				unicode,
 				bookmarks=true,
@@ -82,18 +104,30 @@
 				urlbordercolor=blue,
 				pdfborderstyle={/S/U/W 1}
 	]{hyperref}								% Гиперссылки
+	\RequirePackage[russian]{cleveref}		% Умные указания страниц (ПОСЛЕ varioref И hyperref)
+	\let\globcount\newcount					% Фикс для autonum
+	\RequirePackage{autonum}				% Умная нумерация формул (ПОСЛЕ cleveref)
 	\RequirePackage[numbered]{bookmark}		% Закладки
 	\RequirePackage{enumerate}				% Расширенные возможности перечислений
 	\RequirePackage{soulutf8}				% Для пакета soul
-	\RequirePackage{soul} 					% Зачеркивания
+	\RequirePackage{soul} 					% Зачеркивания и прочие модификаторы текста
 	\RequirePackage{cancel} 				% Зачеркивания (диагональные)
 	\RequirePackage{ifthen}					% Условия
-	%\RequirePackage{fixltx2e}				% Для \textsubscript (конфликтует с float), используйте \text(up)(it)...
+	% \RequirePackage{fixltx2e}				% Для \textsubscript (конфликтует с float), используйте \text(up)(it)...
+	% \RequirePackage{extsizes}				% Шрифты больше 12pt (в этом шаблоне не нужен)
+
+	% Настройки cleveref
+	\crefformat{equation}{(#2#1#3)}
+	\crefrangeformat{equation}{(#3#1#4) to~(#5#2#6)}
+	\crefmultiformat{equation}{(#2#1#3)}{ and~(#2#1#3)}{, (#2#1#3)}{ and~(#2#1#3)}
+	\crefname{appsec}{прил.}{прил.}
+	\Crefname{appsec}{Приложение}{Приложения}
+	% \crefname{lstlisting}{листинг}{листинги}
 
 %% ШАБЛОН ТИТУЛЬНОГО ЛИСТА %%
 
 	% Используйте \maketitle для вызова, при сборке без необходимых команд в преамбуле
-	% они будут отображены на листе с пояснением.
+	% они будут отображены на листе.
 	% Дополнительная команда: \titleright{} для сдвига области имен
 
 	\newcommand*{\student}[1]{\gdef\@student{#1}}
@@ -163,18 +197,17 @@
 	% Использует пакет appendix
 	% Требуется две компиляции для верного отображения
 
-	%\RequirePackage[page,title,titletoc]{appendix}
 	\RequirePackage[title,titletoc]{appendix}
 
-	\newenvironment{append}{%
+	\newenvironment{append}[1][Приложение]{%
 		\clearpage
-		%\renewcommand{\appendixpagename}{Приложения}
 		\begin{appendices}
 		\newcommand{\sectionbreak}{\clearpage}
-		\titleformat{\section}{\normalsize\bfseries}{Приложение~\thesection}{1em}{}
+		\crefalias{section}{appsec}	% Для \cref в cleveref
+		\titleformat{\section}{\normalsize\bfseries}{\appendixname~\thesection}{1em}{}
 		\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
-		\renewcommand{\appendixname}{Приложение}
-		\renewcommand{\thesection}{\Asbuk{section}} 
+		\renewcommand{\appendixname}{#1}
+		\renewcommand{\thesection}{\Asbuk{section}}
 	}{
 		\end{appendices}
 	}
@@ -236,25 +269,52 @@
 %		backrefstyle=two						% Компрессия страниц указаний на место цитирования
 	]{biblatex}									% Библиография
 
-	\newcommand*{\lib}{%
+	\newcommand*{\lib}[1][Список литературы]{%
 		\newpage
 		\phantomsection
-		\addcontentsline{toc}{section}{Список литературы} 
-		\printbibliography[title=Список литературы]
+		\addcontentsline{toc}{section}{#1} 
+		\printbibliography[title=#1]
 	}
 
-%% СОКРАЩЕНИЕ КОМАНДЫ ГЕНЕРАЦИИ ОГЛАВЛЕНИЯ %%
+%% СОКРАЩЕНИЕ КОМАНДЫ ГЕНЕРАЦИИ ОГЛАВЛЕНИЯ, СПИСКОВ РИСУНКОВ И ТАБЛИЦ %%
 	
-	\newcommand*{\toc}{%
+	\newcommand*{\toc}[1][Содержание]{%
+		\renewcommand\contentsname{#1}
 		\tableofcontents
+		\clearpage
+	}
+
+	\newcommand*{\lof}[1][Список иллюстраций]{%
+		\renewcommand\listfigurename{#1}
+		\newpage
+		\phantomsection
+		\addcontentsline{toc}{section}{#1}
+		\listoffigures
+		\clearpage
+	}
+
+	\newcommand*{\lot}[1][Список таблиц]{%
+		\renewcommand\listtablename{#1}
+		\newpage
+		\phantomsection
+		\addcontentsline{toc}{section}{#1}
+		\listoftables
+		\clearpage
+	}
+
+	% РАБОТАЕТ ТОЛЬКО С ПАКЕТОМ LISTINGS, VERBATIM НЕ УЧИТЫВАЕТСЯ!!!
+	\newcommand*{\lol}[1][Список листингов]{%
+		\renewcommand\lstlistlistingname{#1}
+		\newpage
+		\phantomsection
+		\addcontentsline{toc}{section}{#1}
+		\lstlistoflistings
 		\clearpage
 	}
 
 %% НЕПРОТЕСТИРОВАННЫЕ ПАКЕТЫ И НАСТРОЙКИ %%
 
 	\RequirePackage{icomma}						% Умная запятая ($2,4$ $2, 4$)
-	\RequirePackage{varioref}					% Умные указания страниц
-	% НАСТРОИТЬ ЭТОТ ПАКЕТ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	\newcommand*{\hm}[1]{#1\nobreak\discretionary{}%
 		{\hbox{$\mathsurround=0pt #1$}}{}}		% Дублирование знаков при переносе в формулах

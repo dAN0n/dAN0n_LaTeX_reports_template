@@ -1,4 +1,5 @@
-\section{Сложные случаи из практики}
+% !TEX root = ../labtemplatezobkov33501_3.tex
+\section{Случаи из практики}
 
 \subsection{Пример картинки}
 
@@ -63,7 +64,7 @@ end rtl;
 
 Данные о максимальной частоте и минимальных временных задержках представлены на рис. \ref{pic:base} (а так же рис.~\ref{pic:fmax} и рис.~\ref{pic:clk}).\cite{subcap}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{subfigure}{.4\linewidth}\centering
 		\includegraphics[width=1\textwidth]{fmax}
 		\caption{Максимальная частота}
@@ -82,7 +83,7 @@ end rtl;
 
 Результат моделирования синтезированной схемы представлен на рис. \ref{pic:modeling}. 
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \captionsetup{justification=centering} % Вот эта строка, в принципе можно внести в шаблон, но я поленился, плюс есть случай, когда её лучше не переопределять
 \includegraphics[width=1\textwidth]{modeling}
@@ -110,7 +111,7 @@ end rtl;
 
 \subsection{Русские буквы в формулах}
 
-Пока только такой вариант (\ref{eq:rus}).
+Пока только такой вариант \eqref{eq:rus} (можно использовать просто $\backslash$text\{\}).
 
 \begin{equation}
 	\sum_{\textup{Какая-то лажа}}^{\textit{Какой-то курсив}} \textbf{Какой-то жирнич}
@@ -379,6 +380,12 @@ $\begin{aligned}
 Нельзя использовать зачёркивания пакета $cancel$\cite{cancel} с самого первого слова: \\
 
 \mbox{}\bcancel{Ещё} \cancel{такие} \st{вот}\cite{soul} \xcancel{иногда} $\cancelto{\textup{варианты}}{\textup{есть}}$.
+
+\subsection{Внешние гиперссылки}
+
+\url{www.fighting.ru}
+
+\href{www.vk.com}{ВКонтакте}
 
 \subsection{Создание списка литературы}
 

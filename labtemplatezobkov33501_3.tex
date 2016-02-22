@@ -1,6 +1,8 @@
+% НЕ ЗАБЫВАЙТЕ МЕНЯТЬ ИМЯ ОСНОВНОГО ФАЙЛА В ПЕРВЫХ СТРОЧКАХ ВКЛЮЧАЕМЫХ ФАЙЛОВ,
+% ЭТО УПРОЩАЕТ НАВИГАЦИЮ ПО ПРОЕКТУ!!!
 \documentclass[oneside,final,14pt]{extarticle}	% Тип документа
 \usepackage{SPbSTUreports}						% Стилевой файл
-\addbibresource{ref.bib}						% Файл библиографической базы
+\addbibresource{bibl/ref.bib}						% Файл библиографической базы
 
 %% ЗАПОЛНЕНИЕ ТИТУЛЬНОГО ЛИСТА %%
 \student{Д. А. Зобков}
@@ -18,13 +20,13 @@
 	\maketitle									% Генерация титульного листа
 	\toc										% Генерация оглавления							
 
-	\include*{goaltask}							% Цель работы/Постановка задачи
-	\include*{theory}							% Теоретический раздел
-	\include*{lab}								% Ход работы
-	\include*{conclusion}						% Выводы
+	\include*{sections/goaltask}							% Цель работы/Постановка задачи
+	\include*{sections/theory}							% Теоретический раздел
+	\include*{sections/lab}								% Ход работы
+	\include*{sections/conclusion}						% Выводы
 
-	\include*{body}								% Сложные случаи из практики автора шаблона
+	\include*{sections/body}								% Cлучаи из практики автора шаблона
 	\lib										% Генерация списка литературы
-	\include*{appendix}							% Приложения
+	\include*{sections/appendix}							% Приложения
 
 \end{document}

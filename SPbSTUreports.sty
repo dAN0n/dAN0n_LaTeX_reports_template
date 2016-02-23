@@ -64,8 +64,11 @@
 	\RequirePackage{supertabular}	% Для длинных многостраничных таблиц
 	\RequirePackage{multirow}		% Для объединения строк
 	\RequirePackage{multicol}		% Несколько колонок
-	\RequirePackage{tabularx}		% Окружение для использования опции x для центрирования
+	\RequirePackage{tabularx}		% Окружение для использования опции x для подгона ширины столбца
+	\RequirePackage{tabulary}		% Окружение для выравнивания по высоте
+	\RequirePackage{longtable}		% Многостраничная таблица
 	\RequirePackage{float}			% Используется для опции [H]
+	\RequirePackage{wrapfig}		% Обтекание рисунков и таблиц текстом
 
 	% Настройка chngcntr
 		\numberwithin{equation}{section}	% Формулы нумеруются по секциям (amsmath)
@@ -259,8 +262,8 @@
 	% biber:title;author;year;publisher;address;language;langid;pagetotal;media;url;urldate;bibtexkey
 	% biber_misc:pages;note;editor;translator;edition;version;volumes;books;parts
 
-	\usepackage{csquotes}
-	\usepackage[%
+	\RequirePackage{csquotes}
+	\RequirePackage[%
 		autolang=other,							% Язык
 		bibencoding=utf8,						% Кодировка
 		sorting=none,							% Name,Title,Year или sorting=none.

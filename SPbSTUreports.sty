@@ -18,11 +18,15 @@
 	\RequirePackage[pdftex]{graphicx}			% Для создания pdf
 	\RequirePackage{amsthm,amssymb,amsmath}		% Математические выражения
 	\RequirePackage{mathtools}					% Всякие мелочи для математики
-	\RequirePackage[labelsep=period]{caption}	% Для рис. и табл.
 	\RequirePackage{indentfirst}				% Отступ (красная строка)
 	\RequirePackage{mmap}						% Поиск и копирование в pdf
 	\pdfcompresslevel=9							% pdf сжатие
-	\graphicspath{{img/}}						% Папка для изображений		
+	\graphicspath{{img/}}						% Папка для изображений	
+	\RequirePackage[%
+		labelsep=period,
+		singlelinecheck=false,
+		justification=centering
+	]{caption}									% Для рис. и табл.	
 
 %% ЗАГОЛОВКИ И ТЕКСТ %%
 
@@ -54,7 +58,6 @@
 
 	\RequirePackage{verbatim}	% Для простых листингов
 	\RequirePackage{listings}	% Листинги (куча проблем)
-	% Надо потестить пакет minted
 
 %% ТАБЛИЦЫ/КАРТИНКИ %%
 
@@ -97,12 +100,12 @@
 	\RequirePackage{color}					% Управление цветом
 	\RequirePackage[russian]{varioref}		% Умные указания страниц
 	\RequirePackage[
-				unicode,
-				bookmarks=true,
-				%allbordercolors=red,
-				allbordercolors=blue,
-				urlbordercolor=blue,
-				pdfborderstyle={/S/U/W 1}
+		unicode,
+		bookmarks=true,
+		%allbordercolors=red,
+		allbordercolors=blue,
+		urlbordercolor=blue,
+		pdfborderstyle={/S/U/W 1}
 	]{hyperref}								% Гиперссылки
 	\RequirePackage[russian]{cleveref}		% Умные указания страниц (ПОСЛЕ varioref И hyperref)
 	\let\globcount\newcount					% Фикс для autonum
@@ -318,5 +321,9 @@
 
 	\newcommand*{\hm}[1]{#1\nobreak\discretionary{}%
 		{\hbox{$\mathsurround=0pt #1$}}{}}		% Дублирование знаков при переносе в формулах
+
+	% Надо потестить пакет minted
+	% Надо потестить пакет fancyvrb
+	% Надо потестить пакет floatrow
 
 \endinput

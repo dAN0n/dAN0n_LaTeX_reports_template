@@ -76,7 +76,6 @@
 
 	% Настройка chngcntr
 		\numberwithin{equation}{section}	% Формулы нумеруются по секциям (amsmath)
-		% \mathtoolsset{showonlyrefs=true}	% Номера только у формул, на которые есть \eqref{}
 		\RequirePackage{chngcntr}			% Картинки/таблицы нумеруются по секциям
 		\counterwithin{figure}{section}		% Настройка пакета chngcntr
 		\counterwithin{table}{section}
@@ -114,7 +113,7 @@
 		urlbordercolor=blue,
 		pdfborderstyle={/S/U/W 1}
 	]{hyperref}								% Гиперссылки
-	\RequirePackage[russian]{cleveref}		% Умные указания страниц (ПОСЛЕ varioref И hyperref)
+	\RequirePackage[russian]{sty/cleveref}		% Умные указания страниц (ПОСЛЕ varioref И hyperref)
 	\let\globcount\newcount					% Фикс для autonum
 	\RequirePackage{autonum}				% Умная нумерация формул (ПОСЛЕ cleveref)
 	\RequirePackage[numbered]{bookmark}		% Закладки

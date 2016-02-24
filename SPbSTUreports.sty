@@ -69,6 +69,10 @@
 	\RequirePackage{longtable}		% Многостраничная таблица
 	\RequirePackage{float}			% Используется для опции [H]
 	\RequirePackage{wrapfig}		% Обтекание рисунков и таблиц текстом
+	\newcommand{\captiontab}[1]{%
+		\captionsetup{justification=raggedleft}
+		\caption{#1}
+	}
 
 	% Настройка chngcntr
 		\numberwithin{equation}{section}	% Формулы нумеруются по секциям (amsmath)
@@ -128,6 +132,13 @@
 	\crefmultiformat{equation}{(#2#1#3)}{ and~(#2#1#3)}{, (#2#1#3)}{ and~(#2#1#3)}
 	\crefname{appsec}{прил.}{прил.}
 	\Crefname{appsec}{Приложение}{Приложения}
+	\addto\extrasrussian{%					% Исправляет странную подпись varioref
+		\renewcommand\reftextbefore{на предыдущей странице}%
+		\renewcommand\reftextcurrent{}
+	}
+	\renewcommand{\vref}[1]{\cref{#1} \vpageref{#1}}
+	\renewcommand{\Vref}[1]{\Cref{#1} \vpageref{#1}}
+
 	% \crefname{lstlisting}{листинг}{листинги}
 
 %% ШАБЛОН ТИТУЛЬНОГО ЛИСТА %%

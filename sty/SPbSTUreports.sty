@@ -113,7 +113,7 @@
 		urlbordercolor=blue,
 		pdfborderstyle={/S/U/W 1}
 	]{hyperref}								% Гиперссылки
-	\RequirePackage[russian]{sty/cleveref}		% Умные указания страниц (ПОСЛЕ varioref И hyperref)
+	\RequirePackage[russian]{sty/cleveref}	% Умные указания страниц (ПОСЛЕ varioref И hyperref)
 	\let\globcount\newcount					% Фикс для autonum
 	\RequirePackage{autonum}				% Умная нумерация формул (ПОСЛЕ cleveref)
 	\RequirePackage[numbered]{bookmark}		% Закладки
@@ -176,6 +176,9 @@
 	% Шапка
 	Санкт-Петербургский государственный политехнический \\ университет Петра Великого \\[0.1cm]
 	Кафедра компьютерных систем и программных технологий \\[9cm]
+	%\vfill
+	%\vfill
+	%\vfill
 	% Основная часть
 	\textbf{Отчет по \@papertype\unskip\strut}\\[0.1cm]
 	\textbf{Дисциплина:} \@lessontype\unskip\strut \\[0.1cm]
@@ -330,13 +333,38 @@
 
 %% НЕПРОТЕСТИРОВАННЫЕ ПАКЕТЫ И НАСТРОЙКИ %%
 
-	\RequirePackage{icomma}						% Умная запятая ($2,4$ $2, 4$)
+	\RequirePackage{icomma}								% Умная запятая ($2,4$ $2, 4$)
 
 	\newcommand*{\hm}[1]{#1\nobreak\discretionary{}%
-		{\hbox{$\mathsurround=0pt #1$}}{}}		% Дублирование знаков при переносе в формулах
+		{\hbox{$\mathsurround=0pt #1$}}{}}				% Дублирование знаков при переносе в формулах
 
-	% Надо потестить пакет minted
-	% Надо потестить пакет fancyvrb
-	% Надо потестить пакет floatrow
+	\renewcommand{\epsilon}{\ensuremath{\varepsilon}}	% Русские варианты некоторых математических символов
+	\renewcommand{\phi}{\ensuremath{\varphi}}
+	\renewcommand{\kappa}{\ensuremath{\varkappa}}
+	\renewcommand{\le}{\ensuremath{\leqslant}}
+	\renewcommand{\leq}{\ensuremath{\leqslant}}
+	\renewcommand{\ge}{\ensuremath{\geqslant}}
+	\renewcommand{\geq}{\ensuremath{\geqslant}}
+	\renewcommand{\emptyset}{\varnothing}
+
+%% TODO %%
+
+	% Настроить пакеты ниже
+	% Поправить структуру стилевого файла
+	% Провести рефакторинг шаблона титульного листа (если необходимо)
+
+	\RequirePackage{xargs}							% Несколько опциональных аргументов
+	% \newcommandx*{\summ}[2][1=x, 2=y]{$#1+#2$}	% Пример
+	% \RequirePackage{floatrow}						% Улучшенный float
+	% \floatsetup[table]{style=plaintop}
+
+	\captionsetup[table]{justification=raggedleft}
+	\captionsetup[figure]{justification=centering}
+	\captionsetup[subtable]{justification=raggedleft}
+	\captionsetup[subfigure]{justification=centering}
+	\floatstyle{plaintop}
+	\restylefloat{table}
+	\floatstyle{plain}
+	\restylefloat{figure}
 
 \endinput

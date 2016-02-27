@@ -2,10 +2,10 @@
 \begin{append}
 	
 	\section{Ещё один пример листинга} \label{app:matlab}
+	%% РАБОТАЕТ ТОЛЬКО С КАКОЙ_ТО ОСОБОЙ КОДИРОВКОЙ %%
 
 	\lstset{language=Matlab,
-		inputencoding=cp1251,
-		basicstyle=\small\sffamily, 
+		basicstyle=\small\ttfamily, 
 	    breaklines=true,
 	    morekeywords={matlab2tikz},
 	    keywordstyle=\color{blue},
@@ -20,6 +20,7 @@
 	    emph=[1]{for,break},emphstyle=[1]\color{red},
 	    frame=single,
 	    stepnumber=5,
+	    captionpos=b,
 	}
 
 	\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue

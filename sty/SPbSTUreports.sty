@@ -33,14 +33,12 @@
 		justification=centering
 	]{caption}									% Для рис. и табл.	
 
-	\newcommand*{\wordfont}[1][0]{%				% работает оч странно, разобраться
-		\ifthenelse{}{%
-			\IfFileExists{pscyr.sty}{%
-				\RequirePackage{pscyr}
-				\renewcommand{\rmdefault}{ftm}
-				\renewcommand{\sfdefault}{far}
-				\renewcommand{\ttdefault}{fcr}
-			}{}
+	\newcommand*{\wordfont}{%					% вроде стало лучше
+		\IfFileExists{pscyr.sty}{%
+			\RequirePackage{pscyr}
+			\renewcommand{\rmdefault}{ftm}
+			\renewcommand{\sfdefault}{far}
+			\renewcommand{\ttdefault}{fcr}
 		}{}
 	}
 

@@ -1,8 +1,13 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{SPbSTUreports}[02/18/2016 SPbSTU reports template v2]
+% Сборка не проверялась на других устройствах
+% Использовалась конфигурация: Windows+MiKTeX 2.9+pdfLaTeX+PSCyr (устанавливается отдельно)
+% Не приспособлена для использования с XeTeX (возможно, в будущем это будет реализовано)
+% Не проверялась на Linux-системах и TeXLive-сборках
 
 %% ОСНОВНЫЕ ПАКЕТЫ %%
 
+	\RequirePackage{ifthen}						% Условия
 	\RequirePackage{geometry}					% Отступы
 	\geometry{									% Настройка отступов
 		a4paper,
@@ -11,15 +16,15 @@
 		top=15mm,
 		bottom=15mm,
 	}
-	\RequirePackage[english,russian]{babel}		% Для русского оформления
-	\selectlanguage{russian}					% Язык для babel
+	\RequirePackage{mmap}						% Поиск и копирование в pdf
 	\RequirePackage[T2A,T1]{fontenc}			% Кодировка шрифтов
 	\RequirePackage[utf8]{inputenc}				% Для поддержки кириллицы
+	\RequirePackage[english,russian]{babel}		% Для русского оформления
+	\selectlanguage{russian}					% Язык для babel
 	\RequirePackage[pdftex]{graphicx}			% Для создания pdf
 	\RequirePackage{amsthm,amssymb,amsmath}		% Математические выражения
 	\RequirePackage{mathtools}					% Всякие мелочи для математики
 	\RequirePackage{indentfirst}				% Отступ (красная строка)
-	\RequirePackage{mmap}						% Поиск и копирование в pdf
 	\pdfcompresslevel=9							% pdf сжатие
 	\graphicspath{{img/}}						% Папка для изображений	
 	\RequirePackage[%
@@ -27,6 +32,17 @@
 		singlelinecheck=false,
 		justification=centering
 	]{caption}									% Для рис. и табл.	
+
+	\newcommand*{\wordfont}[1][0]{%				% работает оч странно, разобраться
+		\ifthenelse{}{%
+			\IfFileExists{pscyr.sty}{%
+				\RequirePackage{pscyr}
+				\renewcommand{\rmdefault}{ftm}
+				\renewcommand{\sfdefault}{far}
+				\renewcommand{\ttdefault}{fcr}
+			}{}
+		}{}
+	}
 
 %% ЗАГОЛОВКИ И ТЕКСТ %%
 
@@ -181,17 +197,17 @@
 		%allbordercolors=red,
 		allbordercolors=blue,
 		urlbordercolor=blue,
-		pdfborderstyle={/S/U/W 1}
+		pdfborderstyle={/S/U/W 0.5}
 	]{hyperref}								% Гиперссылки
 	\RequirePackage[russian]{sty/cleveref}	% Умные указания страниц (ПОСЛЕ varioref И hyperref)
 	\let\globcount\newcount					% Фикс для autonum
 	\RequirePackage{autonum}				% Умная нумерация формул (ПОСЛЕ cleveref)
 	\RequirePackage[numbered]{bookmark}		% Закладки
 	\RequirePackage{enumerate}				% Расширенные возможности перечислений
+	\RequirePackage{enumitem}
 	\RequirePackage{soulutf8}				% Для пакета soul
 	\RequirePackage{soul} 					% Зачеркивания и прочие модификаторы текста
 	\RequirePackage{cancel} 				% Зачеркивания (диагональные)
-	\RequirePackage{ifthen}					% Условия
 	% \RequirePackage{fixltx2e}				% Для \textsubscript (конфликтует с float), используйте \text(up)(it)...
 	% \RequirePackage{extsizes}				% Шрифты больше 12pt (в этом шаблоне не нужен)
 
@@ -245,10 +261,10 @@
 	\begin{center}
 	% Шапка
 	Санкт-Петербургский государственный политехнический \\ университет Петра Великого \\[0.1cm]
-	Кафедра компьютерных систем и программных технологий \\[9cm]
-	%\vfill
-	%\vfill
-	%\vfill
+	\textbf{Кафедра компьютерных систем и программных технологий}
+	\vfill
+	\vfill
+	\vfill
 	% Основная часть
 	\textbf{Отчет по \@papertype\unskip\strut}\\[0.1cm]
 	\textbf{Дисциплина:} \@lessontype\unskip\strut \\[0.1cm]
@@ -257,12 +273,12 @@
 	\vfill
 	% Имена/подписи
 	\ifthenelse{\not\equal{\@studentt}{\texttt{\string\studentt\{\}}} \OR \equal{\@student}{\texttt{\string\student\{\}}}}{
-			\flushleft{Выполнили студенты гр. \@group\unskip\strut} 
+			\flushleft{Выполнили \\ студенты гр. \@group\unskip\strut} 
 			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
 
 			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@studentt\unskip\strut}\\[0.6cm]
 		}{
-			\flushleft{Выполнил студент гр. \@group\unskip\strut} 
+			\flushleft{Выполнил \\ студент гр. \@group\unskip\strut} 
 			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
 	}
 
@@ -367,7 +383,7 @@
 
 %% СОКРАЩЕНИЕ КОМАНДЫ ГЕНЕРАЦИИ ОГЛАВЛЕНИЯ, СПИСКОВ РИСУНКОВ И ТАБЛИЦ %%
 	
-	\newcommand*{\toc}[1][Содержание]{%
+	\newcommand*{\toc}[1][СОДЕРЖАНИЕ]{%
 		\renewcommand\contentsname{#1}
 		\tableofcontents
 		\clearpage
@@ -436,5 +452,40 @@
 	\restylefloat{table}
 	\floatstyle{plain}
 	\restylefloat{figure}
+
+	% поменять сантиметры на другие единицы измерения
+	% какие-то проблемы с отступами перед новым разделом (из-за абзацного отступа)
+	% eps2pdf
+
+	\sloppy					% Избавляемся от переполнений
+	\clubpenalty=10000		% Запрещаем разрыв страницы после первой строки абзаца
+	\widowpenalty=10000		% Запрещаем разрыв страницы после последней строки абзаца
+	\setlength{\parindent}{2.5em}                       % Абзацный отступ. Должен быть одинаковым по всему тексту и равен пяти знакам (ГОСТ Р 7.0.11-2011, 5.3.7).
+% 	% Используем дефис для ненумерованных списков (ГОСТ 2.105-95, 4.1.7)
+	\renewcommand{\labelitemi}{\normalfont\bfseries{--}} 
+	\setlist{nosep,%                                    % Единый стиль для всех списков (пакет enumitem), без дополнительных интервалов.
+    	labelindent=\parindent,leftmargin=*%            % Каждый пункт, подпункт и перечисление записывают с абзацного отступа (ГОСТ 2.105-95, 4.1.8)
+	}
+
+% 	%%% Оглавление %%%
+\RequirePackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\hfill\large\bfseries} % "СОДЕРЖАНИЕ" посередине
+\renewcommand{\cftaftertoctitle}{\hfill}
+
+\renewcommand{\cftsecdotsep}{\cftdotsep}                % отбивка точками до номера страницы начала главы/раздела
+
+\cftsetrmarg{2.55em plus1fil}                       %To have the (sectional) titles in the ToC, etc., typeset ragged right with no hyphenation
+\renewcommand{\cftsecleader}{\cftdotfill{\cftsecdotsep}}% нежирные точки до номеров страниц у глав в оглавлении
+
+\renewcommand{\cftsecpagefont}{\normalfont}        % нежирные номера страниц у глав в оглавлении
+
+\makeatletter % убиваем переносы в заголовках
+    \renewcommand{\section}{\@startsection{section}{1}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont\bfseries}}
+    \renewcommand{\subsection}{\@startsection{subsection}{2}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
+    \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
+\makeatother
+
+\RequirePackage{epstopdf}
+\epstopdfsetup{update} % only regenerate pdf files when eps file is newer
 
 \endinput

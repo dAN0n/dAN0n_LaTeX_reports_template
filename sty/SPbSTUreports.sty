@@ -1,13 +1,28 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{SPbSTUreports}[02/18/2016 SPbSTU reports template v2]
-% Сборка не проверялась на других устройствах
-% Использовалась конфигурация: Windows+MiKTeX 2.9+pdfLaTeX+PSCyr (устанавливается отдельно)
-% Не приспособлена для использования с XeTeX (возможно, в будущем это будет реализовано)
-% Не проверялась на Linux-системах и TeXLive-сборках
+\ProvidesPackage{SPbSTUreports}[03/05/2016 SPbSTU reports template v3]
 
-%% ОСНОВНЫЕ ПАКЕТЫ %%
+% Сборка не проверялась на других устройствах и конфигурациях
+% Проверенная конфигурация: Windows+MiKTeX 2.9+pdfLaTeX+PSCyr (устанавливается отдельно)
+% Не приспособлена для использования с XeTeX
+
+% ВОЗМОЖНЫЕ ДАЛЬНЕЙШИЕ УЛУЧШЕНИЯ:
+% Поддержка XeTeX
+% Проверка и настройка для других конфигураций
+% Стили listings для разных языков
+% Автоматическое определение положения места подписи для подрисунков
+% Более простое использование longtable
+% Убедиться в необходимости пакета supertabular и команд \captiontab и \specialcell
+% Протестировать пакет epstopdf
+% Поменять единицы измерения в шаблоне титульного листа
+
+%% УВЕЛИЧЕНИЕ ФУНКЦИОНАЛЬНОСТИ LaTeX %%
 
 	\RequirePackage{ifthen}						% Условия
+	\RequirePackage{xargs}						% Несколько опциональных аргументов
+	% \newcommandx*{\su}[2][1=x, 2=y]{$#1+#2$}	% Пример
+
+%% БАЗОВЫЕ ПАКЕТЫ %%
+
 	\RequirePackage{geometry}					% Отступы
 	\geometry{									% Настройка отступов
 		a4paper,
@@ -22,18 +37,62 @@
 	\RequirePackage[english,russian]{babel}		% Для русского оформления
 	\selectlanguage{russian}					% Язык для babel
 	\RequirePackage[pdftex]{graphicx}			% Для создания pdf
+	\pdfcompresslevel=9							% pdf сжатие
+	\RequirePackage{indentfirst}				% Отступ (красная строка)
+	\graphicspath{{img/}}						% Папка для изображений	
+	\RequirePackage{newclude}					% include*{} убирает \clearpage
+
+%% МАТЕМАТИКА %%
+
 	\RequirePackage{amsthm,amssymb,amsmath}		% Математические выражения
 	\RequirePackage{mathtools}					% Всякие мелочи для математики
-	\RequirePackage{indentfirst}				% Отступ (красная строка)
-	\pdfcompresslevel=9							% pdf сжатие
-	\graphicspath{{img/}}						% Папка для изображений	
-	\RequirePackage[%
-		labelsep=period,
-		singlelinecheck=false,
-		justification=centering
-	]{caption}									% Для рис. и табл.	
 
-	\newcommand*{\wordfont}{%					% вроде стало лучше
+	\RequirePackage{icomma}						% Умная запятая ($2,4$ $2, 4$)
+
+	% Дублирование знаков при переносе в формулах
+	\newcommand*{\hm}[1]{#1\nobreak\discretionary{}%
+		{\hbox{$\mathsurround=0pt #1$}}{}}
+
+	% Русские варианты некоторых математических символов
+	\renewcommand{\epsilon}{\ensuremath{\varepsilon}}
+	\renewcommand{\phi}{\ensuremath{\varphi}}
+	\renewcommand{\kappa}{\ensuremath{\varkappa}}
+	\renewcommand{\le}{\ensuremath{\leqslant}}
+	\renewcommand{\leq}{\ensuremath{\leqslant}}
+	\renewcommand{\ge}{\ensuremath{\geqslant}}
+	\renewcommand{\geq}{\ensuremath{\geqslant}}
+	\renewcommand{\emptyset}{\varnothing}
+
+%% ТЕКСТ И СИМВОЛЫ %%
+
+	\RequirePackage{setspace}					% Межстрочный интервал
+	% \onehalfspacing							% 1.5
+	% \doublespacing							% 2
+	% \singlespacing							% 1
+
+	\RequirePackage{soulutf8}					% Для пакета soul
+	\RequirePackage{soul} 						% Зачеркивания и прочие модификаторы текста
+	\RequirePackage{cancel} 					% Зачеркивания (диагональные)
+	\RequirePackage{enumerate}					% Расширенные возможности перечислений
+	\RequirePackage{enumitem}					% Отступы между пунктами списка
+
+	\sloppy										% Избавляемся от переполнений
+	\clubpenalty=10000							% Запрещаем разрыв страницы после первой
+	\widowpenalty=10000							% и после последней строки абзаца
+	\setlength{\parindent}{2.5em}				% Абзацный отступ (5 знаков)
+
+	\renewcommand{\labelitemi}{\normalfont\bfseries{--}}	% Дефис для ненумерованных списков
+	\setlist{nosep,%
+    	labelindent=\parindent,
+    	leftmargin=*,
+	}														% Абзацный отступ, без интервалов
+
+%% ШРИФТЫ %%
+
+	% Команда \wordfont включает шрифты PSCyr, если они установлены
+	% Здесь устанавливается набор Times New Roman + Arial + Courier New
+
+	\newcommand*{\wordfont}{%
 		\IfFileExists{pscyr.sty}{%
 			\RequirePackage{pscyr}
 			\renewcommand{\rmdefault}{ftm}
@@ -42,189 +101,238 @@
 		}{}
 	}
 
-%% ЗАГОЛОВКИ И ТЕКСТ %%
-
-	\RequirePackage{titlesec}	% Дополнительные возможности секционирования
-	\RequirePackage{titletoc}	% Дополнительные возможности содержания
-	\RequirePackage{fancyhdr}	% Колонтитулы
-
-	% Настройка titlesec
-		\titleformat{\section}{\normalsize\bfseries}{\thesection}{1em}{}
-		\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
-		\titleformat{\subsubsection}{\normalsize}{\thesubsubsection}{1em}{}
-
-	% Настройка fancyhdr
-		\renewcommand{\headrulewidth}{0pt}	% Отключает полосу сверху
-		\pagestyle{fancy}					% Включение пакета fancyhdr
-		\lhead{}							% Пусто вверху слева
-		\chead{}							% Пусто вверху по центру
-		\rhead{}							% Пусто вверху справа
-		\lfoot{}							% Пусто вверху слева
-		\cfoot{}							% Пусто вверху по центру
-		\rfoot{\thepage}					% Номер страницы внизу справа
-
-	\RequirePackage{setspace}				% Интерлиньяж
-	% \onehalfspacing						% Интерлиньяж 1.5
-	% \doublespacing						% Интерлиньяж 2
-	% \singlespacing						% Интерлиньяж 1
-
 %% ЛИСТИНГИ %%
 
-	\RequirePackage{verbatim}	% Для простых листингов
-	\RequirePackage{listings}	% Листинги (куча проблем)
-	\lstset{					% Костыли для русского языка в listings
-    	extendedchars=true,
-		keepspaces=true,
-		literate={а}{{\selectfont\char224}}1
-		{б}{{\selectfont\char225}}1
-		{в}{{\selectfont\char226}}1
-		{г}{{\selectfont\char227}}1
-		{д}{{\selectfont\char228}}1
-		{е}{{\selectfont\char229}}1
-		{ё}{{\"e}}1
-		{ж}{{\selectfont\char230}}1
-		{з}{{\selectfont\char231}}1
-		{и}{{\selectfont\char232}}1
-		{й}{{\selectfont\char233}}1
-		{к}{{\selectfont\char234}}1
-		{л}{{\selectfont\char235}}1
-		{м}{{\selectfont\char236}}1
-		{н}{{\selectfont\char237}}1
-		{о}{{\selectfont\char238}}1
-		{п}{{\selectfont\char239}}1
-		{р}{{\selectfont\char240}}1
-		{с}{{\selectfont\char241}}1
-		{т}{{\selectfont\char242}}1
-		{у}{{\selectfont\char243}}1
-		{ф}{{\selectfont\char244}}1
-		{х}{{\selectfont\char245}}1
-		{ц}{{\selectfont\char246}}1
-		{ч}{{\selectfont\char247}}1
-		{ш}{{\selectfont\char248}}1
-		{щ}{{\selectfont\char249}}1
-		{ъ}{{\selectfont\char250}}1
-		{ы}{{\selectfont\char251}}1
-		{ь}{{\selectfont\char252}}1
-		{э}{{\selectfont\char253}}1
-		{ю}{{\selectfont\char254}}1
-		{я}{{\selectfont\char255}}1
-		{А}{{\selectfont\char192}}1
-		{Б}{{\selectfont\char193}}1
-		{В}{{\selectfont\char194}}1
-		{Г}{{\selectfont\char195}}1
-		{Д}{{\selectfont\char196}}1
-		{Е}{{\selectfont\char197}}1
-		{Ё}{{\"E}}1
-		{Ж}{{\selectfont\char198}}1
-		{З}{{\selectfont\char199}}1
-		{И}{{\selectfont\char200}}1
-		{Й}{{\selectfont\char201}}1
-		{К}{{\selectfont\char202}}1
-		{Л}{{\selectfont\char203}}1
-		{М}{{\selectfont\char204}}1
-		{Н}{{\selectfont\char205}}1
-		{О}{{\selectfont\char206}}1
-		{П}{{\selectfont\char207}}1
-		{Р}{{\selectfont\char208}}1
-		{С}{{\selectfont\char209}}1
-		{Т}{{\selectfont\char210}}1
-		{У}{{\selectfont\char211}}1
-		{Ф}{{\selectfont\char212}}1
-		{Х}{{\selectfont\char213}}1
-		{Ц}{{\selectfont\char214}}1
-		{Ч}{{\selectfont\char215}}1
-		{Ш}{{\selectfont\char216}}1
-		{Щ}{{\selectfont\char217}}1
-		{Ъ}{{\selectfont\char218}}1
-		{Ы}{{\selectfont\char219}}1
-		{Ь}{{\selectfont\char220}}1
-		{Э}{{\selectfont\char221}}1
-		{Ю}{{\selectfont\char222}}1
-		{Я}{{\selectfont\char223}}1
+	\RequirePackage{listings}					% Листинги
+	\RequirePackage{verbatim}					% Для простых листингов
+
+%% ЗАГОЛОВКИ %%
+
+	\RequirePackage{titlesec}					% Улучшение секционирования
+	\RequirePackage{titletoc}					% Улучшение содержания
+	\RequirePackage{tocloft}					% Улучшение содержания и листов рисунков/таблиц
+
+	% Настройка titlesec
+	\titleformat{\section}{\normalsize\bfseries}{\thesection}{1em}{}
+	\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
+	\titleformat{\subsubsection}{\normalsize}{\thesubsubsection}{1em}{}
+
+	% Убираем переносы в заголовках
+	\renewcommand{\section}{\@startsection{section}{1}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont\bfseries}}
+	\renewcommand{\subsection}{\@startsection{subsection}{2}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
+	\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
+
+%% ОГЛАВЛЕНИЕ %%
+
+	\renewcommand{\cfttoctitlefont}{\hfill\large\bfseries}		% "СОДЕРЖАНИЕ" посередине
+	\renewcommand{\cftaftertoctitle}{\hfill}
+
+	% Отбивка точками
+	\renewcommand{\cftsecdotsep}{\cftdotsep}					% До страницы начала раздела
+	\renewcommand{\cftsecleader}{\cftdotfill{\cftsecdotsep}}	% Нежирные точки у разделов
+
+	\cftsetrmarg{2.55em plus1fil}								% Убираем переносы
+	\renewcommand{\cftsecpagefont}{\normalfont}					% Нежирные страницы у разделов
+
+%% КОЛОНТИТУЛЫ %%
+
+	\RequirePackage{fancyhdr}					% Колонтитулы
+
+	% Настройка fancyhdr
+	\renewcommand{\headrulewidth}{0pt}			% Отключает полосу сверху
+	\pagestyle{fancy}							% Включение пакета fancyhdr
+	\lhead{}									% Пусто вверху слева
+	\chead{}									% Пусто вверху по центру
+	\rhead{}									% Пусто вверху справа
+	\lfoot{}									% Пусто вверху слева
+	\cfoot{}									% Пусто вверху по центру
+	\rfoot{\thepage}							% Номер страницы внизу справа
+
+	% Исправление неправильного размещения номера страницы в содержании
+	\fancypagestyle{plain}{%
+		\fancyhf{} 								% Очистить все поля
+		\fancyfoot[RO]{\thepage}				% Установка внизу справа на нечетной странице
+		\fancyfoot[RE]{\thepage}				% Установка внизу справа на четной странице
 	}
 
-%% ТАБЛИЦЫ/КАРТИНКИ %%
+% %% ОБЩЕЕ ДЛЯ КАРТИНОК/ТАБЛИЦ %%
 
-	\RequirePackage{supertabular}	% Для длинных многостраничных таблиц
-	\RequirePackage{multirow}		% Для объединения строк
-	\RequirePackage{multicol}		% Несколько колонок
-	\RequirePackage{tabularx}		% Окружение для использования опции x для подгона ширины столбца
-	\RequirePackage{tabulary}		% Окружение для выравнивания по высоте
-	\RequirePackage{longtable}		% Многостраничная таблица
-	\RequirePackage{float}			% Используется для опции [H]
-	\RequirePackage{wrapfig}		% Обтекание рисунков и таблиц текстом
-	\newcommand{\captiontab}[1]{%
+	\RequirePackage[%
+		labelsep=period,
+		singlelinecheck=false,
+		justification=centering
+	]{caption}									% Для рис. и табл.	
+
+	\RequirePackage{float}						% Используется для опции [H]
+	\RequirePackage{wrapfig}					% Обтекание рисунков и таблиц текстом
+	\newcommand{\captiontab}[1]{%				% ЗАЧЕМ НУЖНА ЭТА КОМАНДА???
 		\captionsetup{justification=raggedleft}
 		\caption{#1}
 	}
 
 	% Настройка chngcntr
-		\numberwithin{equation}{section}	% Формулы нумеруются по секциям (amsmath)
-		\RequirePackage{chngcntr}			% Картинки/таблицы нумеруются по секциям
-		\counterwithin{figure}{section}		% Настройка пакета chngcntr
-		\counterwithin{table}{section}
-		\AtBeginDocument{\counterwithin{lstlisting}{section}}
-		%\counterwithin{figure}{subsection}
-		%\counterwithin{table}{subsection}
+	\numberwithin{equation}{section}			% Формулы нумеруются по секциям (amsmath)
+	\RequirePackage{chngcntr}					% Картинки/таблицы нумеруются по секциям
+	\counterwithin{figure}{section}				% Настройка пакета chngcntr
+	\counterwithin{table}{section}
+	\AtBeginDocument{\counterwithin{lstlisting}{section}}
+	%\counterwithin{figure}{subsection}
+	%\counterwithin{table}{subsection}
 
 	% Настройка subcaption
-		\RequirePackage{subcaption}							% Несколько картинок в одной
-		\renewcommand{\thesubfigure}{\asbuk{subfigure}}		% Русские буквы в подписях subcaption
-		\DeclareCaptionLabelFormat{r-parens}{\textbf{#2)}}	% Стилизация subcaption
-		\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+	\RequirePackage{subcaption}							% Несколько картинок в одной
+	\renewcommand{\thesubfigure}{\asbuk{subfigure}}		% Русские буквы в подписях subcaption
+	\DeclareCaptionLabelFormat{r-parens}{\textbf{#2)}}	% Стилизация subcaption
 
-		\captionsetup{font=normalsize}	% Основные настройки подписей
-		\captionsetup[sub]{				% Настройки подподписей
-		    font=small,					% Сделать шрифт меньше для текста и label
-		%    textfont=sl,				% Сделать только текст подписи наклонным
-		    labelformat=r-parens}		% Вызов этой настройки
+	\captionsetup{font=normalsize}				% Основные настройки подписей
+	\captionsetup[sub]{							% Настройки подподписей
+		font=small,								% Сделать шрифт меньше для текста и label
+		% textfont=sl,							% Сделать только текст подписи наклонным
+		labelformat=r-parens}					% Вызов этой настройки
+
+%% ТАБЛИЦЫ %%
+
+	\RequirePackage{supertabular}				% Для длинных многостраничных таблиц
+	\RequirePackage{multirow}					% Для объединения строк
+	\RequirePackage{multicol}					% Несколько колонок
+	\RequirePackage{tabularx}					% Окружение для использования опции x для подгона ширины столбца
+	\RequirePackage{tabulary}					% Окружение для выравнивания по высоте
+	\RequirePackage{longtable}					% Многостраничная таблица
+
+	% Разрыв строки внутри ячейки таблицы
+	\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+	\captionsetup[table]{justification=raggedleft}
+	\captionsetup[subtable]{justification=raggedleft}
+	\floatstyle{plaintop}
+	\restylefloat{table}
+
+%% КАРТИНКИ %%
+
+	\RequirePackage{epstopdf}					% Конвертация eps картинок в pdf (UNTESTED)
+	\epstopdfsetup{update}						% Обновляет pdf только при обновлении eps
+
+	\captionsetup[figure]{justification=centering}
+	\captionsetup[subfigure]{justification=centering}
+	\floatstyle{plain}
+	\restylefloat{figure}
 
 %% ГРАФИКИ %%
 
 	\RequirePackage{pgfplots}	% Для графиков (сложен и неудобен почти всегда)
 	\pgfplotsset{compat=1.12}	% Принудительное использование данной версии
 
-%% ОСТАЛЬНОЕ %%
+%% ГИПЕРССЫЛКИ %%
 
-	\RequirePackage{newclude}				% include*{} убирает \clearpage
-	\RequirePackage{color}					% Управление цветом
+	\RequirePackage{xcolor}					% Управление цветом
+
+	% Пакеты, чувствительные к порядку вызова!!!
 	\RequirePackage[russian]{varioref}		% Умные указания страниц
 	\RequirePackage[
 		unicode,
 		bookmarks=true,
-		%allbordercolors=red,
 		allbordercolors=blue,
 		urlbordercolor=blue,
 		pdfborderstyle={/S/U/W 0.5}
 	]{hyperref}								% Гиперссылки
-	\RequirePackage[russian]{sty/cleveref}	% Умные указания страниц (ПОСЛЕ varioref И hyperref)
+	\RequirePackage[russian]{sty/cleveref}	% Умные указания страниц
 	\let\globcount\newcount					% Фикс для autonum
-	\RequirePackage{autonum}				% Умная нумерация формул (ПОСЛЕ cleveref)
+	\RequirePackage{autonum}				% Умная нумерация формул
+
 	\RequirePackage[numbered]{bookmark}		% Закладки
-	\RequirePackage{enumerate}				% Расширенные возможности перечислений
-	\RequirePackage{enumitem}
-	\RequirePackage{soulutf8}				% Для пакета soul
-	\RequirePackage{soul} 					% Зачеркивания и прочие модификаторы текста
-	\RequirePackage{cancel} 				% Зачеркивания (диагональные)
-	% \RequirePackage{fixltx2e}				% Для \textsubscript (конфликтует с float), используйте \text(up)(it)...
-	% \RequirePackage{extsizes}				% Шрифты больше 12pt (в этом шаблоне не нужен)
 
 	% Настройки cleveref
 	\crefformat{equation}{(#2#1#3)}
-	\crefrangeformat{equation}{(#3#1#4) to~(#5#2#6)}
-	\crefmultiformat{equation}{(#2#1#3)}{ and~(#2#1#3)}{, (#2#1#3)}{ and~(#2#1#3)}
+	\crefrangeformat{equation}{(#3#1#4)-(#5#2#6)}
+	\crefmultiformat{equation}{(#2#1#3)}{ и~(#2#1#3)}{, (#2#1#3)}{ и~(#2#1#3)}
 	\crefname{appsec}{прил.}{прил.}
 	\Crefname{appsec}{Приложение}{Приложения}
-	\addto\extrasrussian{%					% Исправляет странную подпись varioref
+	% \crefname{lstlisting}{листинг}{листинги}
+
+	% Настройки varioref
+	\addto\extrasrussian{%					% Исправляет странную подпись
 		\renewcommand\reftextbefore{на предыдущей странице}%
 		\renewcommand\reftextcurrent{}
 	}
 	\renewcommand{\vref}[1]{\cref{#1} \vpageref{#1}}
 	\renewcommand{\Vref}[1]{\Cref{#1} \vpageref{#1}}
 
-	% \crefname{lstlisting}{листинг}{листинги}
+%% СПИСОК ЛИТЕРАТУРЫ %%
 
-%% ШАБЛОН ТИТУЛЬНОГО ЛИСТА %%
+	% Требуется 3-4 компиляции:
+	% latex
+	% biber
+	% latex - 1-2 раза
+	
+	% Используется команда \lib для создания библиографии
+
+	% Для создания библиографической базы можно использовать JabRef
+	% Создать область наиболее часто используемых полей для заполнения можно, добавив в меню
+	% Options -> Set up general fields следующие строки (без %):
+	% biber:title;author;year;publisher;address;language;langid;pagetotal;media;url;urldate;bibtexkey
+	% biber_misc:pages;note;editor;translator;edition;version;volumes;books;parts
+
+	% Подробнее о ГОСТ стиле: https://www.ctan.org/pkg/biblatex-gost
+
+	\RequirePackage{csquotes}					% Цитирование, используется biblatex
+	\RequirePackage[%
+		autolang=other,							% Язык
+		bibencoding=utf8,						% Кодировка
+		sorting=none,							% Name,Title,Year или sorting=none
+		maxbibnames=3,							% Максимальное число авторов
+		minbibnames=2,							% Число авторов, отображаемое при сокращении
+		style=gost-numeric,						% Стиль
+		backend=biber,							% Использование biber вмето BiBTeX
+		% backref,								% Указание на место цитирования
+		% backrefstyle=two						% Компрессия страниц указаний на место цитирования
+	]{biblatex}									% Библиография
+
+%% ДРУГИЕ СПИСКИ %%
+
+	% Команды \lib, \toc, \lof, \lot, \lol
+
+	\newcommand*{\lib}[1][Список литературы]{%
+		\newpage
+		\phantomsection
+		\addcontentsline{toc}{section}{#1} 
+		\printbibliography[title=#1]
+	}
+
+	\newcommand*{\toc}[1][СОДЕРЖАНИЕ]{%
+		\renewcommand\contentsname{#1}
+		\tableofcontents
+		\clearpage
+	}
+
+	\newcommand*{\lof}[1][Список иллюстраций]{%
+		\renewcommand\listfigurename{#1}
+		\newpage
+		\phantomsection
+		\addcontentsline{toc}{section}{#1}
+		\listoffigures
+		\clearpage
+	}
+
+	\newcommand*{\lot}[1][Список таблиц]{%
+		\renewcommand\listtablename{#1}
+		\newpage
+		\phantomsection
+		\addcontentsline{toc}{section}{#1}
+		\listoftables
+		\clearpage
+	}
+
+	% РАБОТАЕТ ТОЛЬКО С ПАКЕТОМ LISTINGS
+	\newcommand*{\lol}[1][Список листингов]{%
+		\renewcommand\lstlistlistingname{#1}
+		\newpage
+		\phantomsection
+		\addcontentsline{toc}{section}{#1}
+		\lstlistoflistings
+		\clearpage
+	}
+
+%% ТИТУЛЬНЫЙ ЛИСТ %%
 
 	% Используйте \maketitle для вызова, при сборке без необходимых команд в преамбуле
 	% они будут отображены на листе.
@@ -294,9 +402,9 @@
 	}
 
 %% ПРИЛОЖЕНИЯ %%
-	
+
 	% Используйте окружение \begin{append} и \section для приложений
-	% Реализовано добавление подсекции и автоперенос на следующую страницу
+	% Реализовано добавление подсекций и автоперенос на следующую страницу
 	% Использует пакет appendix
 	% Требуется две компиляции для верного отображения
 
@@ -306,7 +414,7 @@
 		\clearpage
 		\begin{appendices}
 		\newcommand{\sectionbreak}{\clearpage}
-		\crefalias{section}{appsec}	% Для \cref в cleveref
+		\crefalias{section}{appsec}				% Для \cref в cleveref
 		\titleformat{\section}{\normalsize\bfseries}{\appendixname~\thesection}{1em}{}
 		\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
 		\renewcommand{\appendixname}{#1}
@@ -315,8 +423,8 @@
 		\end{appendices}
 	}
 
+	% Решение проблемы с "Undefined control sequence"
 	% Взято отсюда: http://tex.stackexchange.com/questions/41649/how-to-make-appendix-and-hyperref-packages-work-together-with-cyrillic-non-asci
-	\makeatletter
 	\let\oriAlph\Alph
 	\let\orialph\alph
 	\renewcommand{\@resets@pp}{\par
@@ -341,149 +449,78 @@
 		\fi
 		\restoreapp
 	}
-	\makeatother
 
-%% СПИСОК ЛИТЕРАТУРЫ %%
+%% НАСТРОЙКИ ПАКЕТА LISTINGS %%
 
-	% Требуется 3-4 компиляции:
-	% latex (PDFlatex)
-	% biber
-	% latex (PDFlatex) - 1-2 раза
-	
-	% Используется команда \lib для создания библиографии
-
-
-	% Для создания библиографической базы рекомендуется использовать JabRef
-	% Создать область наиболее часто используемых полей для заполнения можно, добавив в меню
-	% Options -> Set up general fields следующие строки (без %):
-	% biber:title;author;year;publisher;address;language;langid;pagetotal;media;url;urldate;bibtexkey
-	% biber_misc:pages;note;editor;translator;edition;version;volumes;books;parts
-
-	\RequirePackage{csquotes}
-	\RequirePackage[%
-		autolang=other,							% Язык
-		bibencoding=utf8,						% Кодировка
-		sorting=none,							% Name,Title,Year или sorting=none.
-		maxbibnames=3,							% Максимальное число авторов в списке литературы.
-		minbibnames=2,							% Число авторов, отображаемое при сокращении.
-		style=gost-numeric,						% Стиль
-		backend=biber,							% Использование biber вмето BiBTeX
-%		backref,								% Указание на место цитирования
-%		backrefstyle=two						% Компрессия страниц указаний на место цитирования
-	]{biblatex}									% Библиография
-
-	\newcommand*{\lib}[1][Список литературы]{%
-		\newpage
-		\phantomsection
-		\addcontentsline{toc}{section}{#1} 
-		\printbibliography[title=#1]
+	\lstset{									% Костыли для русского языка в listings
+    	extendedchars=true,
+		keepspaces=true,
+		literate={а}{{\selectfont\char224}}1
+		{б}{{\selectfont\char225}}1
+		{в}{{\selectfont\char226}}1
+		{г}{{\selectfont\char227}}1
+		{д}{{\selectfont\char228}}1
+		{е}{{\selectfont\char229}}1
+		{ё}{{\"e}}1
+		{ж}{{\selectfont\char230}}1
+		{з}{{\selectfont\char231}}1
+		{и}{{\selectfont\char232}}1
+		{й}{{\selectfont\char233}}1
+		{к}{{\selectfont\char234}}1
+		{л}{{\selectfont\char235}}1
+		{м}{{\selectfont\char236}}1
+		{н}{{\selectfont\char237}}1
+		{о}{{\selectfont\char238}}1
+		{п}{{\selectfont\char239}}1
+		{р}{{\selectfont\char240}}1
+		{с}{{\selectfont\char241}}1
+		{т}{{\selectfont\char242}}1
+		{у}{{\selectfont\char243}}1
+		{ф}{{\selectfont\char244}}1
+		{х}{{\selectfont\char245}}1
+		{ц}{{\selectfont\char246}}1
+		{ч}{{\selectfont\char247}}1
+		{ш}{{\selectfont\char248}}1
+		{щ}{{\selectfont\char249}}1
+		{ъ}{{\selectfont\char250}}1
+		{ы}{{\selectfont\char251}}1
+		{ь}{{\selectfont\char252}}1
+		{э}{{\selectfont\char253}}1
+		{ю}{{\selectfont\char254}}1
+		{я}{{\selectfont\char255}}1
+		{А}{{\selectfont\char192}}1
+		{Б}{{\selectfont\char193}}1
+		{В}{{\selectfont\char194}}1
+		{Г}{{\selectfont\char195}}1
+		{Д}{{\selectfont\char196}}1
+		{Е}{{\selectfont\char197}}1
+		{Ё}{{\"E}}1
+		{Ж}{{\selectfont\char198}}1
+		{З}{{\selectfont\char199}}1
+		{И}{{\selectfont\char200}}1
+		{Й}{{\selectfont\char201}}1
+		{К}{{\selectfont\char202}}1
+		{Л}{{\selectfont\char203}}1
+		{М}{{\selectfont\char204}}1
+		{Н}{{\selectfont\char205}}1
+		{О}{{\selectfont\char206}}1
+		{П}{{\selectfont\char207}}1
+		{Р}{{\selectfont\char208}}1
+		{С}{{\selectfont\char209}}1
+		{Т}{{\selectfont\char210}}1
+		{У}{{\selectfont\char211}}1
+		{Ф}{{\selectfont\char212}}1
+		{Х}{{\selectfont\char213}}1
+		{Ц}{{\selectfont\char214}}1
+		{Ч}{{\selectfont\char215}}1
+		{Ш}{{\selectfont\char216}}1
+		{Щ}{{\selectfont\char217}}1
+		{Ъ}{{\selectfont\char218}}1
+		{Ы}{{\selectfont\char219}}1
+		{Ь}{{\selectfont\char220}}1
+		{Э}{{\selectfont\char221}}1
+		{Ю}{{\selectfont\char222}}1
+		{Я}{{\selectfont\char223}}1
 	}
-
-%% СОКРАЩЕНИЕ КОМАНДЫ ГЕНЕРАЦИИ ОГЛАВЛЕНИЯ, СПИСКОВ РИСУНКОВ И ТАБЛИЦ %%
-	
-	\newcommand*{\toc}[1][СОДЕРЖАНИЕ]{%
-		\renewcommand\contentsname{#1}
-		\tableofcontents
-		\clearpage
-	}
-
-	\newcommand*{\lof}[1][Список иллюстраций]{%
-		\renewcommand\listfigurename{#1}
-		\newpage
-		\phantomsection
-		\addcontentsline{toc}{section}{#1}
-		\listoffigures
-		\clearpage
-	}
-
-	\newcommand*{\lot}[1][Список таблиц]{%
-		\renewcommand\listtablename{#1}
-		\newpage
-		\phantomsection
-		\addcontentsline{toc}{section}{#1}
-		\listoftables
-		\clearpage
-	}
-
-	% РАБОТАЕТ ТОЛЬКО С ПАКЕТОМ LISTINGS, VERBATIM НЕ УЧИТЫВАЕТСЯ!!!
-	\newcommand*{\lol}[1][Список листингов]{%
-		\renewcommand\lstlistlistingname{#1}
-		\newpage
-		\phantomsection
-		\addcontentsline{toc}{section}{#1}
-		\lstlistoflistings
-		\clearpage
-	}
-
-%% НЕПРОТЕСТИРОВАННЫЕ ПАКЕТЫ И НАСТРОЙКИ %%
-
-	\RequirePackage{icomma}								% Умная запятая ($2,4$ $2, 4$)
-
-	\newcommand*{\hm}[1]{#1\nobreak\discretionary{}%
-		{\hbox{$\mathsurround=0pt #1$}}{}}				% Дублирование знаков при переносе в формулах
-
-	\renewcommand{\epsilon}{\ensuremath{\varepsilon}}	% Русские варианты некоторых математических символов
-	\renewcommand{\phi}{\ensuremath{\varphi}}
-	\renewcommand{\kappa}{\ensuremath{\varkappa}}
-	\renewcommand{\le}{\ensuremath{\leqslant}}
-	\renewcommand{\leq}{\ensuremath{\leqslant}}
-	\renewcommand{\ge}{\ensuremath{\geqslant}}
-	\renewcommand{\geq}{\ensuremath{\geqslant}}
-	\renewcommand{\emptyset}{\varnothing}
-
-%% TODO %%
-
-	% Настроить пакеты ниже
-	% Поправить структуру стилевого файла
-	% Провести рефакторинг шаблона титульного листа (если необходимо)
-
-	\RequirePackage{xargs}							% Несколько опциональных аргументов
-	% \newcommandx*{\summ}[2][1=x, 2=y]{$#1+#2$}	% Пример
-	% \RequirePackage{floatrow}						% Улучшенный float
-	% \floatsetup[table]{style=plaintop}
-
-	\captionsetup[table]{justification=raggedleft}
-	\captionsetup[figure]{justification=centering}
-	\captionsetup[subtable]{justification=raggedleft}
-	\captionsetup[subfigure]{justification=centering}
-	\floatstyle{plaintop}
-	\restylefloat{table}
-	\floatstyle{plain}
-	\restylefloat{figure}
-
-	% поменять сантиметры на другие единицы измерения
-	% какие-то проблемы с отступами перед новым разделом (из-за абзацного отступа)
-	% eps2pdf
-
-	\sloppy					% Избавляемся от переполнений
-	\clubpenalty=10000		% Запрещаем разрыв страницы после первой строки абзаца
-	\widowpenalty=10000		% Запрещаем разрыв страницы после последней строки абзаца
-	\setlength{\parindent}{2.5em}                       % Абзацный отступ. Должен быть одинаковым по всему тексту и равен пяти знакам (ГОСТ Р 7.0.11-2011, 5.3.7).
-% 	% Используем дефис для ненумерованных списков (ГОСТ 2.105-95, 4.1.7)
-	\renewcommand{\labelitemi}{\normalfont\bfseries{--}} 
-	\setlist{nosep,%                                    % Единый стиль для всех списков (пакет enumitem), без дополнительных интервалов.
-    	labelindent=\parindent,leftmargin=*%            % Каждый пункт, подпункт и перечисление записывают с абзацного отступа (ГОСТ 2.105-95, 4.1.8)
-	}
-
-% 	%%% Оглавление %%%
-\RequirePackage{tocloft}
-\renewcommand{\cfttoctitlefont}{\hfill\large\bfseries} % "СОДЕРЖАНИЕ" посередине
-\renewcommand{\cftaftertoctitle}{\hfill}
-
-\renewcommand{\cftsecdotsep}{\cftdotsep}                % отбивка точками до номера страницы начала главы/раздела
-
-\cftsetrmarg{2.55em plus1fil}                       %To have the (sectional) titles in the ToC, etc., typeset ragged right with no hyphenation
-\renewcommand{\cftsecleader}{\cftdotfill{\cftsecdotsep}}% нежирные точки до номеров страниц у глав в оглавлении
-
-\renewcommand{\cftsecpagefont}{\normalfont}        % нежирные номера страниц у глав в оглавлении
-
-\makeatletter % убиваем переносы в заголовках
-    \renewcommand{\section}{\@startsection{section}{1}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont\bfseries}}
-    \renewcommand{\subsection}{\@startsection{subsection}{2}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
-    \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
-\makeatother
-
-\RequirePackage{epstopdf}
-\epstopdfsetup{update} % only regenerate pdf files when eps file is newer
 
 \endinput

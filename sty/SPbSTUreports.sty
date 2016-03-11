@@ -8,7 +8,6 @@
 % ВОЗМОЖНЫЕ ДАЛЬНЕЙШИЕ УЛУЧШЕНИЯ:
 % Поддержка XeTeX
 % Проверка и настройка для других конфигураций
-% Стили listings для разных языков
 
 %% УВЕЛИЧЕНИЕ ФУНКЦИОНАЛЬНОСТИ LaTeX %%
 
@@ -238,9 +237,15 @@
 	\RequirePackage{pgfplots}	% Для графиков (сложен и неудобен почти всегда)
 	\pgfplotsset{compat=1.12}	% Принудительное использование данной версии
 
-%% ГИПЕРССЫЛКИ %%
+%% ЦВЕТОВАЯ ПАЛИТРА %%
 
 	\RequirePackage{xcolor}					% Управление цветом
+
+	\definecolor{mlgreen}{RGB}{28,172,0}
+	\definecolor{mllilas}{RGB}{170,55,241}
+	\definecolor{vhdlred}{RGB}{179,0,0}
+
+%% ГИПЕРССЫЛКИ %%
 
 	% Пакеты, чувствительные к порядку вызова!!!
 	\RequirePackage[russian]{varioref}		% Умные указания страниц
@@ -479,7 +484,8 @@
 
 %% НАСТРОЙКИ ПАКЕТА LISTINGS %%
 
-	\lstset{									% Костыли для русского языка в listings
+	% Костыли для русского языка в listings
+	\lstset{
     	extendedchars=true,
 		keepspaces=true,
 		literate={а}{{\selectfont\char224}}1
@@ -549,5 +555,63 @@
 		{Ю}{{\selectfont\char222}}1
 		{Я}{{\selectfont\char223}}1
 	}
+
+	% Общие настройки
+	\lstset{
+		basicstyle=\small\ttfamily,				% Размер и начертание шрифта для подсветки кода
+		numbers=left,							% Нумерация строк (слева/справа)
+		numberstyle=\tiny\color{black},			% Размер шрифта для номеров строк	
+		stepnumber=2,							% Шаг между двумя номерами строк
+		numbersep=5pt,							% Расстояние номера строки до кода
+		firstnumber=1,							% Установка номера первой строки 1 (решает проблему неправильного шага строк)
+		numberfirstline=true,					% Подсветка номера первой строки в листинге
+		columns=flexible,						% Выравнивание столбцов (убирает ложные пробелы)
+		frame=single,							% Рамка
+		breaklines=true,						% Автоперенос строк
+		captionpos=b,							% Размещение подписи
+		showstringspaces=false,					% Отображение пробелов
+		breakatwhitespace=false,				% Переносить строки только если есть пробел
+		backgroundcolor=\color{white},			% Цвет фона подсветки
+		identifierstyle=\color{black},			% Цвет обычного кода
+	}
+
+	% MATLAB
+	\lstdefinestyle{matlab}{
+		language=Matlab,						% Язык для подсветки
+		tabsize=4,								% Количество пробелов для Tab
+		morekeywords={matlab2tikz},				% Дополнительные ключевые слова
+		keywordstyle=\color{blue},				% Цвет ключевых слов
+		stringstyle=\color{mllilas},			% Цвет стрингов
+		commentstyle=\color{mlgreen},			% Цвет комментариев
+	}
+
+	% VHDL
+	\lstdefinestyle{vhdl}{
+		language=VHDL,							% Язык для подсветки
+		tabsize=3,								% Количество пробелов для Tab
+		keywordstyle=\color{blue},				% Цвет ключевых слов
+		morekeywords=[2]{						% Дополнительные ключевые слова
+			STD_LOGIC_VECTOR,STD_LOGIC,IEEE,STD_LOGIC_1164,
+			std_logic_vector,std_logic,ieee,std_logic_1164,
+			NUMERIC_STD,STD_LOGIC_ARITH,STD_LOGIC_UNSIGNED,
+			numeric_std,std_logic_arith,std_logic_unsigned,
+			BIT,BOOLEAN,BIT_VECTOR,INTEGER,STRING,
+			bit,boolean,bit_vector,integer,string,
+		},
+		keywordstyle=[2]{\color{vhdlred}},		% Цвет дополнительных ключевых слов
+		morekeywords=[3]{event,EVENT},			% Дополнительные ключевые слова (работает плохо)
+		keywordstyle=[3]{\color{blue}},			% Цвет дополнительных ключевых слов
+		stringstyle=\color{mllilas},			% Цвет стрингов ""
+		morestring=[m][\color{vhdlred}]',		% Цвет стрингов '' (работает плохо, разобраться)
+		commentstyle=\color{mlgreen},			% Цвет комментариев
+		emph=[1]{or,and,not,OR,AND,NOT},		% Переопределение цвета дефолтных ключевых слов
+		emphstyle=[1]\color{vhdlred},			% Указание цвета для переопрееделения
+	}
+
+%% TODO В ДОКУМЕНТЕ %%
+
+	% \RequirePackage{todonotes}
+	% \reversemarginpar
+	% \setlength{\marginparwidth}{1.6cm}
 
 \endinput

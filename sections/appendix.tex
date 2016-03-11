@@ -2,31 +2,10 @@
 \begin{append}
 	
 	\section{Ещё один пример листинга} \label{app:matlab}
-	%% РАБОТАЕТ ТОЛЬКО С КАКОЙ_ТО ОСОБОЙ КОДИРОВКОЙ %%
+	%% РАБОТАЕТ ТОЛЬКО С КАКОЙ-ТО ОСОБОЙ КОДИРОВКОЙ, ИЗУЧИТЬ ПОДРОБНЕЕ %%
 
-	\lstset{language=Matlab,
-		basicstyle=\small\ttfamily, 
-	    breaklines=true,
-	    morekeywords={matlab2tikz},
-	    keywordstyle=\color{blue},
-	    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
-	    identifierstyle=\color{black},
-	    stringstyle=\color{mylilas},
-	    commentstyle=\color{mygreen},
-	    showstringspaces=false,
-	    numbers=left,
-	    numberstyle={\tiny \color{black}},
-	    numbersep=5pt,
-	    emph=[1]{for,break},emphstyle=[1]\color{red},
-	    frame=single,
-	    stepnumber=5,
-	    captionpos=b,
-	}
-
-	\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
-	\definecolor{mylilas}{RGB}{170,55,241}
-
-	\lstinputlisting[firstline=1, lastline=91]{code/Main.m}
+	\lstset{style=matlab, stepnumber=5}
+	\lstinputlisting[firstline=17, firstnumber=17, lastline=91]{code/Main.m}
 
 	\section{Новое приложение на новой странице}
 

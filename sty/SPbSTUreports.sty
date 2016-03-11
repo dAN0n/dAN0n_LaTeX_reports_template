@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{SPbSTUreports}[03/05/2016 SPbSTU reports template v3]
+\ProvidesPackage{SPbSTUreports}[03/11/2016 SPbSTU reports template v3]
 
 % Сборка не проверялась на других устройствах и конфигурациях
 % Проверенная конфигурация: Windows+MiKTeX 2.9+pdfLaTeX+PSCyr (устанавливается отдельно)
@@ -9,11 +9,6 @@
 % Поддержка XeTeX
 % Проверка и настройка для других конфигураций
 % Стили listings для разных языков
-% Автоматическое определение положения места подписи для подрисунков
-% Более простое использование longtable
-% Убедиться в необходимости пакета supertabular и команд \captiontab и \specialcell
-% Протестировать пакет epstopdf
-% Поменять единицы измерения в шаблоне титульного листа
 
 %% УВЕЛИЧЕНИЕ ФУНКЦИОНАЛЬНОСТИ LaTeX %%
 
@@ -81,6 +76,17 @@
 	\widowpenalty=10000							% и после последней строки абзаца
 	\setlength{\parindent}{2.5em}				% Абзацный отступ (5 знаков)
 
+	\RequirePackage[%
+		activate={true,nocompatibility},
+		final,
+		stretch=10,
+		shrink=10,
+		kerning=true,
+		tracking=true,
+		spacing=true
+	]{microtype}								% Улучшение расположения текста
+	\SetTracking{encoding={*}, shape=sc}{40}	% Улучшение пробелов (microtype)
+
 	\renewcommand{\labelitemi}{\normalfont\bfseries{--}}	% Дефис для ненумерованных списков
 	\setlist{nosep,%
     	labelindent=\parindent,
@@ -94,6 +100,9 @@
 
 	\newcommand*{\wordfont}{%
 		\IfFileExists{pscyr.sty}{%
+			% Математика (возможно, придется обновить MiKTeX)
+			\IfFileExists{newtxmath.sty}{\RequirePackage{newtxmath}}
+
 			\RequirePackage{pscyr}
 			\renewcommand{\rmdefault}{ftm}
 			\renewcommand{\sfdefault}{far}
@@ -118,9 +127,9 @@
 	\titleformat{\subsubsection}{\normalsize}{\thesubsubsection}{1em}{}
 
 	% Убираем переносы в заголовках
-	\renewcommand{\section}{\@startsection{section}{1}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont\bfseries}}
-	\renewcommand{\subsection}{\@startsection{subsection}{2}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
-	\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0cm}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
+	\renewcommand{\section}{\@startsection{section}{1}{0ex}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont\bfseries}}
+	\renewcommand{\subsection}{\@startsection{subsection}{2}{0ex}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
+	\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0ex}{-3.5ex plus -1ex minus -.2ex}{2.3ex plus.2ex}{\raggedright\normalfont}}
 
 %% ОГЛАВЛЕНИЕ %%
 
@@ -165,10 +174,6 @@
 
 	\RequirePackage{float}						% Используется для опции [H]
 	\RequirePackage{wrapfig}					% Обтекание рисунков и таблиц текстом
-	\newcommand{\captiontab}[1]{%				% ЗАЧЕМ НУЖНА ЭТА КОМАНДА???
-		\captionsetup{justification=raggedleft}
-		\caption{#1}
-	}
 
 	% Настройка chngcntr
 	\numberwithin{equation}{section}			% Формулы нумеруются по секциям (amsmath)
@@ -192,28 +197,39 @@
 
 %% ТАБЛИЦЫ %%
 
-	\RequirePackage{supertabular}				% Для длинных многостраничных таблиц
 	\RequirePackage{multirow}					% Для объединения строк
-	\RequirePackage{multicol}					% Несколько колонок
+	\RequirePackage{multicol}					% Несколько колонок (не только для таблиц)
 	\RequirePackage{tabularx}					% Окружение для использования опции x для подгона ширины столбца
 	\RequirePackage{tabulary}					% Окружение для выравнивания по высоте
+	\RequirePackage{spreadtab}					% Окружение с именами ячеек
+	\RequirePackage{array}						% Новые типы столбцов
 	\RequirePackage{longtable}					% Многостраничная таблица
 
-	% Разрыв строки внутри ячейки таблицы
-	\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+	% Определение новых типов столбцов (array): 
+	% P (по центру к верхней части)
+	% M (по центру ячейки)
+	\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+	\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+	\setlength{\extrarowheight}{1pt}			% Увеличение высоты ячеек таблицы (array)
+
+	% Использование \captioncont для "Продолжение таблицы" в зоне \endhead (longtable)
+	\DeclareCaptionLabelFormat{continued}{Продолжение таблицы~#2}
+	\newcommand\captioncont{%
+		\captionsetup{labelformat=continued}
+		\caption[]{}\\
+	}
 
 	\captionsetup[table]{justification=raggedleft}
-	\captionsetup[subtable]{justification=raggedleft}
 	\floatstyle{plaintop}
 	\restylefloat{table}
 
 %% КАРТИНКИ %%
 
-	\RequirePackage{epstopdf}					% Конвертация eps картинок в pdf (UNTESTED)
+	\RequirePackage{epstopdf}					% Конвертация eps картинок в pdf
 	\epstopdfsetup{update}						% Обновляет pdf только при обновлении eps
 
 	\captionsetup[figure]{justification=centering}
-	\captionsetup[subfigure]{justification=centering}
 	\floatstyle{plain}
 	\restylefloat{figure}
 
@@ -300,7 +316,9 @@
 
 	\newcommand*{\toc}[1][СОДЕРЖАНИЕ]{%
 		\renewcommand\contentsname{#1}
+		\microtypesetup{protrusion=false}		% Отключение висячей пунктуации (microtype)
 		\tableofcontents
+		\microtypesetup{protrusion=true}		% Включение висячей пунктуации (microtype)
 		\clearpage
 	}
 
@@ -309,7 +327,9 @@
 		\newpage
 		\phantomsection
 		\addcontentsline{toc}{section}{#1}
+		\microtypesetup{protrusion=false}		% Отключение висячей пунктуации (microtype)
 		\listoffigures
+		\microtypesetup{protrusion=true}		% Включение висячей пунктуации (microtype)
 		\clearpage
 	}
 
@@ -318,7 +338,9 @@
 		\newpage
 		\phantomsection
 		\addcontentsline{toc}{section}{#1}
+		\microtypesetup{protrusion=false}		% Отключение висячей пунктуации (microtype)
 		\listoftables
+		\microtypesetup{protrusion=true}		% Включение висячей пунктуации (microtype)
 		\clearpage
 	}
 
@@ -328,7 +350,9 @@
 		\newpage
 		\phantomsection
 		\addcontentsline{toc}{section}{#1}
+		\microtypesetup{protrusion=false}		% Отключение висячей пунктуации (microtype)
 		\lstlistoflistings
+		\microtypesetup{protrusion=true}		% Включение висячей пунктуации (microtype)
 		\clearpage
 	}
 
@@ -360,37 +384,37 @@
 	\newcommand*{\@theme}{\texttt{\string\theme\{\}}}
 
 	\newcommand*{\titleright}[1]{\gdef\@titleright{#1}}
-	\newcommand*{\@titleright}{10}
+	\newcommand*{\@titleright}{45}
 
 	\renewcommand*{\maketitle}{%
 	\begin{titlepage}
 	\begin{center}
 	% Шапка
-	Санкт-Петербургский государственный политехнический \\ университет Петра Великого \\[0.1cm]
+	Санкт-Петербургский государственный политехнический \\ университет Петра Великого \\[0.5ex]
 	\textbf{Кафедра компьютерных систем и программных технологий}
 	\vfill
 	\vfill
 	\vfill
 	% Основная часть
-	\textbf{Отчет по \@papertype\unskip\strut}\\[0.1cm]
-	\textbf{Дисциплина:} \@lessontype\unskip\strut \\[0.1cm]
+	\textbf{Отчет по \@papertype\unskip\strut}\\[0.5ex]
+	\textbf{Дисциплина:} \@lessontype\unskip\strut \\[0.5ex]
 	\textbf{Тема:} \@theme\unskip\strut
 	\end{center}
 	\vfill
 	% Имена/подписи
 	\ifthenelse{\not\equal{\@studentt}{\texttt{\string\studentt\{\}}} \OR \equal{\@student}{\texttt{\string\student\{\}}}}{
 			\flushleft{Выполнили \\ студенты гр. \@group\unskip\strut} 
-			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
+			\hfill\parbox{\@titleright ex}{\hspace*{13.2ex}\hbox to 0ex{\raisebox{-1em}{\small(подпись)}}\hspace*{-3.6ex}\rule{13.2ex}{0.8pt} \@student\unskip\strut}\\[3ex]
 
-			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@studentt\unskip\strut}\\[0.6cm]
+			\hfill\parbox{\@titleright ex}{\hspace*{13.2ex}\hbox to 0ex{\raisebox{-1em}{\small(подпись)}}\hspace*{-3.6ex}\rule{13.2ex}{0.8pt} \@studentt\unskip\strut}\\[3ex]
 		}{
 			\flushleft{Выполнил \\ студент гр. \@group\unskip\strut} 
-			\hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@student\unskip\strut}\\[0.6cm]
+			\hfill\parbox{\@titleright ex}{\hspace*{13.2ex}\hbox to 0ex{\raisebox{-1em}{\small(подпись)}}\hspace*{-3.6ex}\rule{13.2ex}{0.8pt} \@student\unskip\strut}\\[3ex]
 	}
 
-	\flushleft{Преподаватель} \hfill\parbox{\@titleright cm}{\hspace*{3cm}\hbox to 0cm{\raisebox{-1em}{\small(подпись)}}\hspace*{-0.8cm}\rule{3cm}{0.8pt} \@teacher\unskip\strut}\\[0.6cm]
+	\flushleft{Преподаватель} \hfill\parbox{\@titleright ex}{\hspace*{13.2ex}\hbox to 0ex{\raisebox{-1em}{\small(подпись)}}\hspace*{-3.6ex}\rule{13.2ex}{0.8pt} \@teacher\unskip\strut}\\[3ex]
 
-	\hfill\parbox{10cm}{\hspace*{3cm}``\rule{0.7cm}{0.8pt}''\rule{3cm}{0.8pt}~\the\year~г.}
+	\hfill\parbox{44ex}{\hspace*{13.2ex}``\rule{3.1ex}{0.8pt}''\rule{13.2ex}{0.8pt}~\the\year~г.}
 	\vfill
 	\begin{center}
 	% Bottom of the page
@@ -413,13 +437,16 @@
 	\newenvironment{append}[1][Приложение]{%
 		\clearpage
 		\begin{appendices}
-		\newcommand{\sectionbreak}{\clearpage}
+		\let\oldsection\section
+		\renewcommand\section{\clearpage\oldsection}
 		\crefalias{section}{appsec}				% Для \cref в cleveref
 		\titleformat{\section}{\normalsize\bfseries}{\appendixname~\thesection}{1em}{}
 		\titleformat{\subsection}{\normalsize}{\thesubsection}{1em}{}
 		\renewcommand{\appendixname}{#1}
 		\renewcommand{\thesection}{\Asbuk{section}}
 	}{
+		\clearpage
+		\renewcommand\section{\oldsection}
 		\end{appendices}
 	}
 

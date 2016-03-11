@@ -5,7 +5,7 @@
 
 Рандомный граф (\vref{pic:graph}). 
 
-Для насильной привязки к месту использовать опцию [H].\cite{float}
+Для насильной привязки к месту использовать опцию \textbf{[H]}. \cite{float}
 
 \begin{figure}[H]
 	\centering
@@ -61,15 +61,17 @@ end rtl;
 
 \subsection{Картинки с подкартинками}
 
-Данные о максимальной частоте и минимальных временных задержках представлены на \vref{pic:base} (а так же \vref{pic:fmax} и \vref{pic:clk}).\cite{subcap}
+Данные о максимальной частоте и минимальных временных задержках представлены на \vref{pic:base} (а так же \vref{pic:fmax} и \vref{pic:clk}). \cite{subcap}
 
 \begin{figure}[H]
-	\begin{subfigure}{.4\linewidth}\centering
+	\begin{subfigure}{.4\linewidth}
+		\centering
 		\includegraphics[width=1\textwidth]{fmax}
 		\caption{Максимальная частота}
 		\label{pic:fmax}
 	\end{subfigure}
-	\begin{subfigure}{.6\linewidth}\centering
+	\begin{subfigure}{.6\linewidth}
+		\centering
 		\includegraphics[width=1\textwidth]{clk}
 		\caption{Минимальные задержки}
 		\label{pic:clk}
@@ -91,12 +93,10 @@ end rtl;
 
 Другой пример (см. \vref{tab:task}). 
 
-Обратите внимание на расположение \verb|\caption{}| сверху и наличие строки \verb|\captionsetup{}| с выравниванием вправо.
+Обратите внимание на расположение \string\caption\{\} снизу и при этом принудительное расположение подписи сверху с выравниванием вправо.
 
 \begin{table}[H]
 	\centering
-	\captionsetup{justification=raggedleft}
-	\caption{Заданная матрица \\ задачи дискретного программирования}
 	\begin{tabular}{|c|c|c|c|c|c|}
 		\hline $\infty$& $27$ & $13$ & $7$ & $45$ & $35$ \\
 		\hline $21$ & $\infty$ & $14$ & $20$ & $19$ & $12$ \\
@@ -106,12 +106,13 @@ end rtl;
 		\hline $30$ & $10$ & $24$ & $28$ & $18$ & $\infty$ \\
 		\hline		
 	\end{tabular}
+	\caption{Заданная матрица \\ задачи дискретного программирования}
 	\label{tab:task}
 \end{table}
 
 \subsection{Русские буквы в формулах}
 
-Пока только такой вариант \vref{equ:rus} (можно использовать просто $\backslash$text\{\}).
+Пока только такой вариант \vref{equ:rus} (можно использовать просто \string\text\{\}).
 
 \begin{equation}
 	\sum_{\textup{Какая-то лажа}}^{\textit{Какой-то курсив}} \textbf{Какой-то жирнич}
@@ -122,9 +123,7 @@ end rtl;
 
 Просто $\overline{\textup{над}}~\underline{\textup{под}}$
 
-Ещё пример (в двух вариантах форматирования кода, на мой взгляд, оба отстойные):
-
-\centerline{\large$y = \overline{\overline{\overline x_{3}x_{4}\overline{\overline{\overline x_{1}\overline x_{2}}\overline x_{5}}}~\overline{x_{2}\overline{\overline x_{1}\overline{x_{4}x_{5}}}}~\overline{x_{3}\overline{\overline{\overline x_{1}\overline x_{4}}\,\overline{\overline x_{2}\overline x_{5}}}}}$} \normalsize ~\\
+Ещё пример:
 
 \centerline{
 	\large$y = \overline{
@@ -158,7 +157,7 @@ end rtl;
 
 \subsection{No line here to end при использовании \textbackslash\textbackslash}
 
-Способ в формуле выше, создать минимальное пространство с помощью $\sim$~перед \textbackslash\textbackslash, или использовать \string\vspace\{X pt\}.
+Два способа решения: создать минимальное пространство с помощью $\sim$\textbackslash\textbackslash, или использовать \string\vspace\{X pt\}.
 
 \subsection{Таблица с картинкой}
 
@@ -166,13 +165,12 @@ end rtl;
 
 \begin{table}[ht]
 	\centering
-	\captionsetup{justification=raggedleft}
-	\caption{Логические выражения для выходов RS-триггера}
-	\begin{tabular}{|c|c|c|}
+	\begin{tabular}{|M{1cm}|M{8cm}|M{5cm}|}
 		\hline Имя & Функциональный преобразователь & Логическое выражение выходов \\
-		\hline inst & \raisebox{-\totalheight}{\includegraphics[width=0.45\textwidth]{rs-inst}} & \specialcell{\\ $\overline{(Q'+\overline{R})\cdot S}\rightarrow Q$} \\
-		\hline inst1 & \raisebox{-\totalheight}{\includegraphics[width=0.45\textwidth]{rs-inst1}} &  \specialcell{\\$\overline{\overline{Q''} \cdot R}\rightarrow \overline{Q}$} \\ \hline
+		\hline inst & \raisebox{-0.85\totalheight}{\includegraphics[width=0.45\textwidth]{rs-inst}} & $\overline{(Q'+\overline{R})\cdot S}\rightarrow Q$ \\
+		\hline inst1 & \raisebox{-0.85\totalheight}{\includegraphics[width=0.45\textwidth]{rs-inst1}} &  $\overline{\overline{Q''} \cdot R}\rightarrow \overline{Q}$ \\ \hline
 	\end{tabular}
+	\caption{Логические выражения для выходов RS-триггера}
 	\label{tab:rs-map}
 \end{table}
 
@@ -180,12 +178,10 @@ end rtl;
 
 Пример в \vref{tab:energy}.
 
-Для склеивания строк требуется пакет \emph{multirow}.\cite{multirow}
+Для склеивания строк требуется пакет \emph{multirow}. \cite{multirow}
 
 \begin{table}[H]
 	\centering
-	\captionsetup{justification=raggedleft}
-	\caption{Зависимость энергопотребления от частоты}
 	\begin{tabular}{|c||*{4}{c|}}
 		\hline \multirow{2}*{\textnumero} & \multirow{2}*{Частота, МГц} & \multirow{2}*{Период, нс} & \multicolumn{2}{c|}{Энергопотребление, мВт}\\
 		\cline{4-2}\cline{5-2}  & & & Полное & Динамическое \\
@@ -193,21 +189,21 @@ end rtl;
 		\hline 2 & 10 & 100 & 65.45 & 0.51\\
 		\hline 3 & 50 & 20 & 68.38 & 2.53\\
 		\hline 4 & 100 & 10 & 72.05 & 5.06\\
-		\hline 5 & 150 & 6.667 & 75.71 & 7.59\\
-		\hline 6 & 200 & 5 & 79.38 & 10.13\\
-		\hline 7 & 250 & 4 & 83.05 & 12.66 \\ \hline
+		\hline 5 & 150 & 6.667 & 75.71 & 7.59\\ \hline
 	\end{tabular}
+	\caption{Зависимость энергопотребления от частоты}
 	\label{tab:energy}
 \end{table}
 
 \subsection{Графики с TikZ/PGF}
 
-Очень сложный метод, надо очень хорошо знать, что делаешь, иначе можно потратить день и не добиться результата. Зато в итоге можно получить векторное изображение с возможностью быстро что-либо поправить или пересчитать. В документации \emph{1200} страниц!!!\cite{pgf}
+Очень сложный метод, надо очень хорошо знать, что делаешь, иначе можно потратить день и не добиться результата. Зато в итоге можно получить качественное векторное изображение. В документации \emph{1200} страниц!!! \cite{pgf}
 
-Простой пример на \vref{gr:energy}.
+Пример на \vref{gr:energy}.
 
 \begin{figure}[H]
-	\begin{subfigure}{.5\linewidth}\centering
+	\begin{subfigure}{.5\linewidth}
+		\centering
 		\begin{tikzpicture}
 			\begin{axis}[
 				grid = both,
@@ -225,7 +221,8 @@ end rtl;
 		\caption{Динамическое}
 		\label{gr:din}
 	\end{subfigure}
-	\begin{subfigure}{.5\linewidth}\centering
+	\begin{subfigure}{.5\linewidth}
+		\centering
 		\begin{tikzpicture}
 			\begin{axis}[
 				grid = both,
@@ -249,7 +246,7 @@ end rtl;
 
 \subsection{Надписи на стрелках}
 
-Использует пакет \emph{mathtools}.\cite{mathtools}
+Использует пакет \emph{mathtools}. \cite{mathtools}
 
 \begin{table}[h!t]
 	\centering
@@ -374,7 +371,7 @@ end rtl;
 \label{pic:graph_max}
 \end{figure}
 
-\subsection{ИИИЛИТНЫЕ зачёркивания}
+\subsection{Зачеркивания}
 
 Пример: \\
 
@@ -383,9 +380,9 @@ $\begin{aligned}
 	&G_{2-6;6-5;1-4}=G_{2-6;6-5;1-4;4-3}\cup G_{2-6;6-5;1-4;\overline{4-3}} \\
 \end{aligned}$ \\
 
-Нельзя использовать зачёркивания пакета \emph{cancel}\cite{cancel} с самого первого слова: \\
+Нельзя использовать зачёркивания пакета \emph{cancel} \cite{cancel} с самого первого слова: \\
 
-\mbox{}\bcancel{Ещё} \cancel{такие} \st{вот}\cite{soul} \xcancel{иногда} $\cancelto{\textup{варианты}}{\textup{есть}}$.
+\mbox{}\bcancel{Ещё} \cancel{такие} \st{вот} \cite{soul} \xcancel{иногда} $\cancelto{\textup{варианты}}{\textup{есть}}$.
 
 \subsection{Внешние гиперссылки}
 
@@ -413,31 +410,31 @@ $\begin{aligned}
 
 Лучше всего определять эти пакеты в преамбуле друг за другом и в особом порядке: \emph{varioref}$\rightarrow$\emph{hyperref}$\rightarrow$\emph{cleveref}$\rightarrow$\emph{autonum}. Нарушение этого порядка ведёт к \emph{\textbf{огромной}} куче проблем. При этом пакет \emph{autonum} использует какой-то полумертвый пакет, из-за которого вылетает ошибка, в данном шаблоне это исправлено. ~\\
 
-Пакет \emph{varioref} изменяет стиль ссылок, вводя новую команду \verb|\vref{}|.\cite{varioref} Соль в том, что пакет определяет, где находится страница, на которую идет ссылка, и если она находится недалеко (следующая), то вместо номера он так и пишет ,,на следующей странице``. Также пакет не отображает страницу, если ссылка ведет на ту же страницу, где она и находится. То есть, данный пакет "--- это совмещение ,,\verb|\ref{} на с. \pageref{}|`` с немного расширенным функционалом. ~\\
+Пакет \emph{varioref} изменяет стиль ссылок, вводя новую команду \string\vref\{\}. \cite{varioref} Соль в том, что пакет определяет, где находится страница, на которую идет ссылка, и если она находится недалеко (следующая), то вместо номера он так и пишет ,,на следующей странице``. Также пакет не отображает страницу, если ссылка ведет на ту же страницу, где она и находится. То есть, данный пакет "--- это совмещение ,,\string\ref\{\} на с. \string\pageref\{\}`` с немного расширенным функционалом. ~\\
 
-Пакет \emph{hyperref} в эту сборку затесался из-за проблем совместимости, так что пропускаем.\cite{hyperref} ~\\
+Пакет \emph{hyperref} в эту сборку затесался из-за проблем совместимости, так что пропускаем. \cite{hyperref} ~\\
 
-Пакет \emph{cleveref} изменяет стиль ссылок, вводя новые команды \verb|\сref{}| и \\ \verb|\Cref{}|.\cite{cleveref} Соль в том, что пакет определяет тип ссылки, и самостоятельно подписывает ее (например ,,\verb|рис. \ref{}|`` без необходимости писать ,,рис.`` самому). Встраивается в \emph{varioref}.
+Пакет \emph{cleveref} изменяет стиль ссылок, вводя новые команды \string\cref\{\} и \\ \string\Cref\{\}. \cite{cleveref} Пакет определяет тип ссылки, и самостоятельно подписывает ее (например ,,рис. \string\ref\{\}`` без необходимости писать ,,рис.`` самому). Встраивается в \emph{varioref}.
 
-Важно знать одну вещь об этом пакете. В версии, находящейся в CTAN, и, соответственно, в сборке MiKTeX, существует баг, который нарушает основную особенность работы \emph{varioref} --- работает только ссылка вида ,,на следующей странице``, и не работают все остальные виды ссылок. На \href{http://www.dr-qubit.org/latex.php#cleveref-docs}{сайте} автора пакета есть новая версия, которая чинит баг, и она лежит в папке шаблона, чтобы не возиться с импортом.~\\
+Важно знать одну вещь об этом пакете. В версии, находящейся в CTAN, и, соответственно, в сборке MiKTeX, существует баг, который нарушает основную особенность работы \emph{varioref} --- работает только ссылка вида ,,на следующей странице``, и не работают все остальные виды ссылок. На \href{http://www.dr-qubit.org/latex.php#cleveref-docs}{сайте} автора пакета есть новая альфа-версия, которая чинит баг, и она лежит в папке шаблона, чтобы не возиться с импортом.~\\
 
-Пакет \emph{autonum} меняет работу с формулами.\cite{autonum} Например, он удаляет окружение \verb|\begin{equation*}| и делает команду \verb|\[\]| идентичной окружению \\ \verb|\begin{equation}|. При этом номера показываются только у тех формул, на которые присутствует ссылка, что немного упрощает работу.
+Пакет \emph{autonum} меняет работу с формулами. \cite{autonum} Например, он удаляет окружение \string\begin\{equation*\} и делает команду \string\[\string\] идентичной окружению \string\begin\{equation\}. При этом номера показываются только у тех формул, на которые присутствует ссылка, что немного упрощает работу.
 
 \subparagraph{Как использовать?}
 
-Использовать \verb|\vref{}| для \emph{почти} всех случаев, где вам нужна ссылка на номер объекта с указанием страницы в сокращенном варианте (,,рис.``) или \verb|\Vref{}| для использования в начале предложения (,,Рисунок``). При этом \emph{cleveref} встраивается в эту команду и будет подставлять тип ссылки автоматически. Из этого правила есть несколько исключений:
+Использовать \string\vref\{\} для \emph{почти} всех случаев, где вам нужна ссылка на номер объекта с указанием страницы в сокращенном варианте (,,рис.``) или \string\Vref\{\} для использования в начале предложения (,,Рисунок``). При этом \emph{cleveref} встраивается в эту команду и будет подставлять тип ссылки автоматически. Из этого правила есть несколько исключений:
 \begin{enumerate}
 	\item Вам не нужна ссылка на страницу.
 
-	Тогда используйте \verb|\сref{}| и \verb|\Cref{}|. Тип ссылки подставляется автоматически.
+	Тогда используйте \string\cref\{\} и \string\Cref\{\}. Тип ссылки подставляется автоматически.
 	\item Вы ссылаетесь на формулу.
 
-	Используйте \verb|\сref{}| и \verb|\Cref{}| (\verb|\vref{}| не~справляется), либо обычный \verb|\ref{}| и/или \verb|\pageref{}|. Автоматически тип подставляться не будет (т.~к. надпись ,,ф-л.`` или как-то так мне показалась крайне идиотской, а переопределить со склонениями нормально не получилось). Можно использовать связку \verb|\cref{} \vpageref{}|, но результат не идеальный.
+	Используйте \string\cref\{\} и \string\Cref\{\} (\string\vref\{\} не~справляется), либо обычный \string\ref\{\} и/или \string\pageref\{\}. Автоматически тип подставляться не будет (т.~к. надпись ,,ф-л.`` или как-то так мне показалась крайне идиотской, а переопределить со склонениями нормально не получилось). Можно использовать связку \string\cref\{\} \string\vpageref\{\}, но результат не идеальный.
 
-	\textbf{UPD.} В процессе работы над шаблоном команды \verb|\vref{}| и \verb|\Vref{}| переопределены, и весь этот пункт стал неактуальным.
+	\textbf{UPD.} В процессе работы над шаблоном команды \string\vref\{\} и \string\Vref\{\} переопределены, и весь этот пункт стал неактуальным.
 	\item Вы ссылаетесь на листинг.
 
-	Используйте обычный \verb|\ref{}| и/или \verb|\pageref{}| (проблемы те же, что и в пункте выше)
+	Используйте обычный \string\ref\{\} и/или \string\pageref\{\} (проблемы те же, что и в пункте выше).
 \end{enumerate}
 
 Если вы хотите более подробно разобраться в работе этой сборки, поглядите документации.
@@ -446,17 +443,21 @@ $\begin{aligned}
 Пример нагло украден с курса ,,Документы и презентации в \LaTeX`` Д. Федоровых.
 
 \begin{longtable}{|c|c|c|c|}
-	\captionsetup{justification=raggedleft}
-	\caption{Заголовок большой таблицы}\\
+	\caption{Заголовок большой таблицы}
+	\label{tab:longtable}\\
 	\hline
 	\textbf{RND1} & \textbf{RND2} & \textbf{RND3} & \textbf{RND4} \\ \hline
 	\endfirsthead
+
+	\captioncont
 	\hline
 	RND1 & RND2 & RND3 & RND4 \\ \hline
 	\endhead
+
 	\hline
-	\multicolumn{4}{r}{продолжение следует\ldots} \
+	% \multicolumn{4}{r}{продолжение следует\ldots} \
 	\endfoot
+
 	\hline
 	\endlastfoot
 
@@ -506,17 +507,17 @@ $\begin{aligned}
 
 \begin{wraptable}{r}{0.5\linewidth}
 	\centering
-	\captiontab{Обтекаемая таблица}
 	\begin{tabular}{|c|c|c|c|c|c|}
 		\hline
 		Год & $P_x$ &$Q_x$ & $P_y$ & $Q_y$ & $n$\\ \hline
 		2008 &  & 36 &  & 32 & — \\ \hline
-		2009 & 30 & 30 & 22 & 50 & 25 \% \\ \hline
-		2010 & 36 & 30 & 22 &  & 20 \% \\ \hline
+		2009 & 30 & 30 & 22 & 50 & 25\% \\ \hline
+		2010 & 36 & 30 & 22 &  & 20\% \\ \hline
 		2011 & 33 & 40 & 24 & 45 & \\ \hline
 	\end{tabular}
+	\caption{Обтекаемая таблица}
 \end{wraptable}
-Победа - это прекрасно, но даже если вы снова проигрываете, лучше всего сказать себе ,,Я могу сделать что-то, чего не мог раньше`` и ценить свой собственный прогресс.
+Победа "--- это прекрасно, но даже если вы снова проигрываете, лучше всего сказать себе ,,Я могу сделать что-то, чего не мог раньше`` и ценить свой собственный прогресс.
 Я думаю, что мышление ,,Я тренируюсь, но у меня нет ощущения, что я играю лучше`` происходит из-за нарушения основной мотивации ,,веселья``, ,,фана``. Так что, вне зависимости от исхода боя, очень важно позитивно смотреть на свои улучшения в игре.
 
 Если вы устраните причины поражения одну за одной, даже если результат не наступит мгновенно, в будущем ваш винрейт стабилизируется и вы будете более уверены в своих решениях, расширите свои знания и кругозор в игре.

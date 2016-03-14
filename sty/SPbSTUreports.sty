@@ -1,13 +1,23 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{SPbSTUreports}[03/11/2016 SPbSTU reports template v3]
+\ProvidesPackage{SPbSTUreports}[03/15/2016 SPbSTU reports template v3]
 
-% Сборка не проверялась на других устройствах и конфигурациях
-% Проверенная конфигурация: Windows+MiKTeX 2.9+pdfLaTeX+PSCyr (устанавливается отдельно)
-% Не приспособлена для использования с XeTeX
+% ВАЖНО! Шаблон не работает на сборке biblatex 3.3 + biber 2.4 + biblatex-gost 1.4
+% Пока что используйте biblatex 3.2 + biber 2.3 + biblatex-gost 1.4
+% или biblatex 3.3 + biber 2.4 + biblatex-gost-dev (13.03.16)
+% Дополнительная информация:
+% https://github.com/AndreyAkinshin/Russian-Phd-LaTeX-Dissertation-Template/issues/119
+% https://sourceforge.net/p/biblatexgost/discussion/general/thread/661048a4/?limit=25#bd41/75a0
+
+% Ссылка на скрипт для установки TeXLive 2015: https://github.com/scottkosty/install-tl-ubuntu
+% Не приспособлен для использования с XeTeX
+
+% Проверенные конфигурации:
+% Windows+MiKTeX 2.9+pdfLaTeX+PSCyr (устанавливается отдельно)
+% Ubuntu 14.04+TeXLive 2015 с biblatex-gost-dev (13.03.16)+pdfLaTeX+PSCyr (устанавливается отдельно)
 
 % ВОЗМОЖНЫЕ ДАЛЬНЕЙШИЕ УЛУЧШЕНИЯ:
 % Поддержка XeTeX
-% Проверка и настройка для других конфигураций
+% Проверка и настройка для других конфигураций (выяснить алгоритм для TeXLive 2013/Debian)
 
 %% УВЕЛИЧЕНИЕ ФУНКЦИОНАЛЬНОСТИ LaTeX %%
 
@@ -243,7 +253,13 @@
 
 	\definecolor{mlgreen}{RGB}{28,172,0}
 	\definecolor{mllilas}{RGB}{170,55,241}
-	\definecolor{vhdlred}{RGB}{179,0,0}
+	\definecolor{vhred}{RGB}{179,0,0}
+	\definecolor{javared}{rgb}{0.6,0,0}
+	\definecolor{javagreen}{rgb}{0.25,0.5,0.35}
+	\definecolor{javapurple}{rgb}{0.5,0,0.35}
+	\definecolor{javadocblue}{rgb}{0.25,0.35,0.75}
+	\definecolor{maroon}{RGB}{128,0,0}
+	\definecolor{darkolivegreen}{RGB}{85,107,47}
 
 %% ГИПЕРССЫЛКИ %%
 
@@ -573,6 +589,7 @@
 		breakatwhitespace=false,				% Переносить строки только если есть пробел
 		backgroundcolor=\color{white},			% Цвет фона подсветки
 		identifierstyle=\color{black},			% Цвет обычного кода
+		emphstyle=[1]\color{black},				% Указание цвета для переопрееделения
 	}
 
 	% MATLAB
@@ -580,16 +597,18 @@
 		language=Matlab,						% Язык для подсветки
 		tabsize=4,								% Количество пробелов для Tab
 		morekeywords={matlab2tikz},				% Дополнительные ключевые слова
-		keywordstyle=\color{blue},				% Цвет ключевых слов
+		keywordstyle=\color{blue}\bfseries,		% Цвет ключевых слов
 		stringstyle=\color{mllilas},			% Цвет стрингов
 		commentstyle=\color{mlgreen},			% Цвет комментариев
+		identifierstyle=\color{black},			% Цвет обычного кода
+		emphstyle=[1]\color{black},				% Указание цвета для переопрееделения
 	}
 
 	% VHDL
 	\lstdefinestyle{vhdl}{
 		language=VHDL,							% Язык для подсветки
 		tabsize=3,								% Количество пробелов для Tab
-		keywordstyle=\color{blue},				% Цвет ключевых слов
+		keywordstyle=\color{blue}\bfseries,		% Цвет ключевых слов
 		morekeywords=[2]{						% Дополнительные ключевые слова
 			STD_LOGIC_VECTOR,STD_LOGIC,IEEE,STD_LOGIC_1164,
 			std_logic_vector,std_logic,ieee,std_logic_1164,
@@ -598,20 +617,68 @@
 			BIT,BOOLEAN,BIT_VECTOR,INTEGER,STRING,
 			bit,boolean,bit_vector,integer,string,
 		},
-		keywordstyle=[2]{\color{vhdlred}},		% Цвет дополнительных ключевых слов
+		keywordstyle=[2]\color{vhred}\bfseries,	% Цвет дополнительных ключевых слов
 		morekeywords=[3]{event,EVENT},			% Дополнительные ключевые слова (работает плохо)
 		keywordstyle=[3]{\color{blue}},			% Цвет дополнительных ключевых слов
 		stringstyle=\color{mllilas},			% Цвет стрингов ""
-		morestring=[m][\color{vhdlred}]',		% Цвет стрингов '' (работает плохо, разобраться)
+		morestring=[m][\color{vhred}]',			% Цвет стрингов '' (работает плохо, разобраться)
 		commentstyle=\color{mlgreen},			% Цвет комментариев
+		identifierstyle=\color{black},			% Цвет обычного кода
 		emph=[1]{or,and,not,OR,AND,NOT},		% Переопределение цвета дефолтных ключевых слов
-		emphstyle=[1]\color{vhdlred},			% Указание цвета для переопрееделения
+		emphstyle=[1]\color{vhred}\bfseries,	% Указание цвета для переопрееделения
+	}
+
+	\lstdefinestyle{latex}{
+		language={[LaTeX]TeX},					% Язык для подсветки
+		tabsize=4,								% Количество пробелов для Tab
+		keywordstyle=\color{blue}\bfseries,		% Цвет ключевых слов
+		morekeywords=[2]{						% Дополнительные ключевые слова
+			ProvidesPackage,RequirePackage,
+			subsection,subsubsection,phantomsection,
+			printbibliography,tableofcontents,listoffigures,
+			listoftables,lstlistoflistings,ifthenelse,
+			Asbuk,asbuk,
+		},
+		keywordstyle=[2]{\color{blue}},			% Цвет дополнительных ключевых слов
+		commentstyle=\color{mlgreen},			% Цвет комментариев
+		identifierstyle=\color{black},			% Цвет обычного кода
+		emphstyle=[1]\color{black},				% Указание цвета для переопрееделения
+	}
+
+	\lstdefinestyle{java}{
+		language=Java,
+		tabsize=4,
+		keywordstyle=\color{javapurple}\bfseries,
+		stringstyle=\color{javared},
+		commentstyle=\color{javagreen},
+		morecomment=[s][\color{javadocblue}]{/**}{*/},
+		identifierstyle=\color{black},
+		emphstyle=[1]\color{black},
+	}
+
+	\lstdefinelanguage{XML}{
+		morestring=[b]",
+		moredelim=[s][\bfseries\color{maroon}]{<}{\ },
+		moredelim=[s][\bfseries\color{maroon}]{</}{>},
+		moredelim=[l][\bfseries\color{maroon}]{/>},
+		moredelim=[l][\bfseries\color{maroon}]{>},
+		morecomment=[s]{<?}{?>},
+		morecomment=[s]{<!--}{-->},
+		commentstyle=\color{darkolivegreen},
+		stringstyle=\color{blue},
+		identifierstyle=\color{red},
+		emphstyle=[1]\color{black},
+	}
+
+	\lstdefinestyle{xml}{
+		language=XML,
+		tabsize=2,
 	}
 
 %% TODO В ДОКУМЕНТЕ %%
 
-	% \RequirePackage{todonotes}
-	% \reversemarginpar
-	% \setlength{\marginparwidth}{1.6cm}
+	\RequirePackage{todonotes}
+	\reversemarginpar
+	\setlength{\marginparwidth}{1.6cm}
 
 \endinput

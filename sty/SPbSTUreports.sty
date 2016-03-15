@@ -97,10 +97,12 @@
 	\SetTracking{encoding={*}, shape=sc}{40}	% Улучшение пробелов (microtype)
 
 	\renewcommand{\labelitemi}{\normalfont\bfseries{--}}	% Дефис для ненумерованных списков
-	\setlist{nosep,%
-    	labelindent=\parindent,
-    	leftmargin=*,
-	}														% Абзацный отступ, без интервалов
+	\setlist{
+		topsep=0pt,
+		itemsep=0ex,
+		partopsep=1ex,
+		parsep=0ex
+	}														% Отступы и интервалы
 
 %% ШРИФТЫ %%
 

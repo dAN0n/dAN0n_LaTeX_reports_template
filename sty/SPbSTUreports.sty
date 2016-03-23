@@ -95,7 +95,7 @@
 		itemsep=0ex,
 		partopsep=1ex,
 		parsep=0ex
-	}														% Отступы и интервалы
+	}											% Отступы и интервалы
 
 %% ШРИФТЫ %%
 
@@ -239,12 +239,12 @@
 
 %% ГРАФИКИ %%
 
-	\RequirePackage{pgfplots}	% Для графиков (сложен и неудобен почти всегда)
-	\pgfplotsset{compat=1.12}	% Принудительное использование данной версии
+	\RequirePackage{pgfplots}					% Для графиков (сложен и неудобен почти всегда)
+	\pgfplotsset{compat=1.12}					% Принудительное использование данной версии
 
 %% ЦВЕТОВАЯ ПАЛИТРА %%
 
-	\RequirePackage{xcolor}					% Управление цветом
+	\RequirePackage{xcolor}						% Управление цветом
 
 	\definecolor{mlgreen}{RGB}{28,172,0}
 	\definecolor{mllilas}{RGB}{170,55,241}
@@ -259,19 +259,19 @@
 %% ГИПЕРССЫЛКИ %%
 
 	% Пакеты, чувствительные к порядку вызова!!!
-	\RequirePackage[russian]{varioref}		% Умные указания страниц
+	\RequirePackage[russian]{varioref}			% Умные указания страниц
 	\RequirePackage[
 		unicode,
 		bookmarks=true,
 		allbordercolors=blue,
 		urlbordercolor=blue,
 		pdfborderstyle={/S/U/W 0.5}
-	]{hyperref}								% Гиперссылки
-	\RequirePackage[russian]{sty/cleveref}	% Умные указания страниц
-	\let\globcount\newcount					% Фикс для autonum
-	\RequirePackage{autonum}				% Умная нумерация формул
+	]{hyperref}									% Гиперссылки
+	\RequirePackage[russian]{sty/cleveref}		% Умные указания страниц
+	\let\globcount\newcount						% Фикс для autonum
+	\RequirePackage{autonum}					% Умная нумерация формул
 
-	\RequirePackage[numbered]{bookmark}		% Закладки
+	\RequirePackage[numbered]{bookmark}			% Закладки
 
 	% Настройки cleveref
 	\crefformat{equation}{(#2#1#3)}
@@ -283,7 +283,7 @@
 	\Crefname{listing}{Листинг}{Листинги}
 
 	% Настройки varioref
-	\addto\extrasrussian{%					% Исправляет странную подпись
+	\addto\extrasrussian{%						% Исправляет странную подпись
 		\renewcommand\reftextbefore{на предыдущей странице}%
 		\renewcommand\reftextcurrent{}
 	}

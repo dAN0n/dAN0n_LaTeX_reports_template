@@ -380,12 +380,16 @@
 	% Дополнительные команды:
 	% \titleright{} для сдвига области имен
 	% \variant[delimiter]{number} для номера варианта
+	% \faculty{} для отображения факультета/института
 
 	\newcommand*{\university}[1]{\gdef\@university{#1}}
-	\newcommand*{\@university}{\texttt{\string\university\{\}}}	
+	\newcommand*{\@university}{\texttt{\string\university\{\}}}
+
+	\newcommand*{\faculty}[1]{\gdef\@faculty{#1}}
+	\newcommand*{\@faculty}{\texttt{\string\faculty\{\}}}	
 
 	\newcommand*{\department}[1]{\gdef\@department{#1}}
-	\newcommand*{\@department}{\texttt{\string\department\{\}}}	
+	\newcommand*{\@department}{\texttt{\string\department\{\}}}
 
 	\newcommand*{\student}[1]{\gdef\@student{#1}}
 	\newcommand*{\@student}{\texttt{\string\student\{\}}}
@@ -412,7 +416,7 @@
 	\newcommand*{\@theme}{\texttt{\string\theme\{\}}}
 
 	\newcommand*{\variant}[2][~]{\gdef\@variant{Вариант#1#2}}
-	\newcommand*{\@variant}{}
+	\newcommand*{\@variant}{\texttt{\string\variant\{\}}}
 
 	\newcommand*{\titleright}[1]{\gdef\@titleright{#1}}
 	\newcommand*{\@titleright}{45}
@@ -422,6 +426,9 @@
 	\begin{center}
 	% Шапка
 	\@university\unskip\strut \\[0.5ex]
+	\ifthenelse{\not\equal{\@faculty}{\texttt{\string\faculty\{\}}}}{
+		\@faculty\unskip\strut \\[0.5ex]
+	}{}
 	\textbf{\@department\unskip\strut}
 	\vfill
 	\vfill
@@ -430,7 +437,7 @@
 	\textbf{Отчет по \@papertype\unskip\strut}\\[0.5ex]
 	\textbf{Дисциплина:} \@lessontype\unskip\strut \\[0.5ex]
 	\textbf{Тема:} \@theme\unskip\strut
-	\ifthenelse{\not\equal{\@variant}{}}{
+	\ifthenelse{\not\equal{\@variant}{\texttt{\string\variant\{\}}}}{
 		\\[0.5ex]\@variant\unskip\strut
 	}{}
 	\end{center}

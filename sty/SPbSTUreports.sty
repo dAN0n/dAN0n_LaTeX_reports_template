@@ -377,7 +377,15 @@
 
 	% Используйте \maketitle для вызова, при сборке без необходимых команд в преамбуле
 	% они будут отображены на листе.
-	% Дополнительная команда: \titleright{} для сдвига области имен
+	% Дополнительные команды:
+	% \titleright{} для сдвига области имен
+	% \variant[delimiter]{number} для номера варианта
+
+	\newcommand*{\university}[1]{\gdef\@university{#1}}
+	\newcommand*{\@university}{\texttt{\string\university\{\}}}	
+
+	\newcommand*{\department}[1]{\gdef\@department{#1}}
+	\newcommand*{\@department}{\texttt{\string\department\{\}}}	
 
 	\newcommand*{\student}[1]{\gdef\@student{#1}}
 	\newcommand*{\@student}{\texttt{\string\student\{\}}}
@@ -391,6 +399,9 @@
 	\newcommand*{\teacher}[1]{\gdef\@teacher{#1}}
 	\newcommand*{\@teacher}{\texttt{\string\teacher\{\}}}
 
+	\newcommand*{\teacherr}[1]{\gdef\@teacherr{#1}}
+	\newcommand*{\@teacherr}{\texttt{\string\teacherr\{\}}}
+
 	\newcommand*{\papertype}[1]{\gdef\@papertype{#1}}
 	\newcommand*{\@papertype}{\texttt{\string\papertype\{\}} (в дат. п.)}
 
@@ -400,6 +411,9 @@
 	\newcommand*{\theme}[1]{\gdef\@theme{#1}}
 	\newcommand*{\@theme}{\texttt{\string\theme\{\}}}
 
+	\newcommand*{\variant}[2][~]{\gdef\@variant{Вариант#1#2}}
+	\newcommand*{\@variant}{}
+
 	\newcommand*{\titleright}[1]{\gdef\@titleright{#1}}
 	\newcommand*{\@titleright}{45}
 
@@ -407,8 +421,8 @@
 	\begin{titlepage}
 	\begin{center}
 	% Шапка
-	Санкт-Петербургский государственный политехнический \\ университет Петра Великого \\[0.5ex]
-	\textbf{Кафедра компьютерных систем и программных технологий}
+	\@university\unskip\strut \\[0.5ex]
+	\textbf{\@department\unskip\strut}
 	\vfill
 	\vfill
 	\vfill
@@ -416,6 +430,9 @@
 	\textbf{Отчет по \@papertype\unskip\strut}\\[0.5ex]
 	\textbf{Дисциплина:} \@lessontype\unskip\strut \\[0.5ex]
 	\textbf{Тема:} \@theme\unskip\strut
+	\ifthenelse{\not\equal{\@variant}{}}{
+		\\[0.5ex]\@variant\unskip\strut
+	}{}
 	\end{center}
 	\vfill
 	% Имена/подписи
@@ -429,7 +446,15 @@
 			\hfill\parbox{\@titleright ex}{\hspace*{13.2ex}\hbox to 0ex{\raisebox{-1em}{\small(подпись)}}\hspace*{-3.6ex}\rule{13.2ex}{0.8pt} \@student\unskip\strut}\\[3ex]
 	}
 
-	\flushleft{Преподаватель} \hfill\parbox{\@titleright ex}{\hspace*{13.2ex}\hbox to 0ex{\raisebox{-1em}{\small(подпись)}}\hspace*{-3.6ex}\rule{13.2ex}{0.8pt} \@teacher\unskip\strut}\\[3ex]
+	\ifthenelse{\not\equal{\@teacherr}{\texttt{\string\teacherr\{\}}} \OR \equal{\@teacher}{\texttt{\string\teacher\{\}}}}{
+			\flushleft{Преподаватели}
+			\hfill\parbox{\@titleright ex}{\hspace*{13.2ex}\hbox to 0ex{\raisebox{-1em}{\small(подпись)}}\hspace*{-3.6ex}\rule{13.2ex}{0.8pt} \@teacher\unskip\strut}\\[3ex]
+
+			\hfill\parbox{\@titleright ex}{\hspace*{13.2ex}\hbox to 0ex{\raisebox{-1em}{\small(подпись)}}\hspace*{-3.6ex}\rule{13.2ex}{0.8pt} \@teacherr\unskip\strut}\\[3ex]
+		}{
+			\flushleft{Преподаватель}
+			\hfill\parbox{\@titleright ex}{\hspace*{13.2ex}\hbox to 0ex{\raisebox{-1em}{\small(подпись)}}\hspace*{-3.6ex}\rule{13.2ex}{0.8pt} \@teacher\unskip\strut}\\[3ex]
+	}
 
 	\hfill\parbox{44ex}{\hspace*{13.2ex}``\rule{3.1ex}{0.8pt}''\rule{13.2ex}{0.8pt}~\the\year~г.}
 	\vfill

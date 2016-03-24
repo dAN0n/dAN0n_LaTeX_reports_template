@@ -426,8 +426,15 @@
 	\begin{center}
 	% Шапка
 	\@university\unskip\strut \\[0.5ex]
-	\ifthenelse{\not\equal{\@faculty}{\texttt{\string\faculty\{\}}}}{
-		\@faculty\unskip\strut \\[0.5ex]
+	\ifthenelse{\not\equal{\@faculty}{\texttt{\string\faculty\{\}}} \or
+		\equal{\@student}{\texttt{\string\student\{\}}} \or
+		\equal{\@teacher}{\texttt{\string\teacher\{\}}} \or
+		\equal{\@lessontype}{\texttt{\string\lessontype\{\}}} \or
+		\equal{\@theme}{\texttt{\string\theme\{\}}} \or
+		\equal{\@department}{\texttt{\string\department\{\}}}
+		% \equal{\@university}{\texttt{\string\university\{\}}}				% РАБОТАЕТ СТРАННО, РАЗОБРАТЬСЯ
+		}{
+			\@faculty\unskip\strut \\[0.5ex]
 	}{}
 	\textbf{\@department\unskip\strut}
 	\vfill
@@ -437,8 +444,14 @@
 	\textbf{Отчет по \@papertype\unskip\strut}\\[0.5ex]
 	\textbf{Дисциплина:} \@lessontype\unskip\strut \\[0.5ex]
 	\textbf{Тема:} \@theme\unskip\strut
-	\ifthenelse{\not\equal{\@variant}{\texttt{\string\variant\{\}}}}{
-		\\[0.5ex]\@variant\unskip\strut
+	\ifthenelse{\not\equal{\@variant}{\texttt{\string\variant\{\}}} \or		% РАЗОБРАТЬСЯ
+		\equal{\@student}{\texttt{\string\student\{\}}} \or
+		\equal{\@teacher}{\texttt{\string\teacher\{\}}} \or
+		\equal{\@lessontype}{\texttt{\string\lessontype\{\}}} \or
+		\equal{\@theme}{\texttt{\string\theme\{\}}} \or
+		\equal{\@department}{\texttt{\string\department\{\}}}		
+		}{
+			\\[0.5ex]\@variant\unskip\strut
 	}{}
 	\end{center}
 	\vfill

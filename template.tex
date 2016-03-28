@@ -18,7 +18,15 @@
 \theme{Шаблон для отчётов в системе верстки \TeX~и расширения \LaTeX}
 % \variant[~\textnumero]{2}
 % \titleright{45}
-% \wordfont													% если раскомменчен, при наличии используются шрифты PSCyr (устанавливаются отдельно)
+% \wordfont													% Если раскомменчен, при наличии используются шрифты PSCyr (устанавливаются отдельно)
+
+%% ДЛЯ XETEX %%
+\newfontfamily{\cyrillicfont}{Times New Roman}
+\setmainfont[Ligatures={TeX,Historic}]{Times New Roman}	% Задаёт основной шрифт документа
+\newfontfamily{\cyrillicfontsf}{Arial}
+\setsansfont{Arial}										% Задаёт шрифт без засечек
+\newfontfamily{\cyrillicfonttt}{Courier New}
+\setmonofont{Courier New}									% Задаёт моноширинный шрифт
 
 % \includeonly{}											% Компиляция части отчета
 

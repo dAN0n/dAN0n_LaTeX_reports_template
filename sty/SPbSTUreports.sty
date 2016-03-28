@@ -302,7 +302,7 @@
 		pdfborderstyle={/S/U/W 0.5}
 	]{hyperref}									% Гиперссылки
 	\ifxetexorluatex
-		\RequirePackage{sty/cleveref}				% Умные указания страниц
+		\RequirePackage{sty/cleveref}			% Умные указания страниц
 	\else
 		\RequirePackage[russian]{sty/cleveref}	% Умные указания страниц
 	\fi
@@ -321,10 +321,15 @@
 	\Crefname{listing}{Листинг}{Листинги}
 
 	% Настройки varioref
-	\addto\extrasrussian{%						% Исправляет странную подпись
+	\ifxetexorluatex
 		\renewcommand\reftextbefore{на предыдущей странице}%
 		\renewcommand\reftextcurrent{}
-	}
+	\else
+		\addto\extrasrussian{%					% Исправляет странную подпись
+			\renewcommand\reftextbefore{на предыдущей странице}%
+			\renewcommand\reftextcurrent{}
+		}
+	\fi
 	\renewcommand{\vref}[1]{\cref{#1} \vpageref{#1}}
 	\renewcommand{\Vref}[1]{\Cref{#1} \vpageref{#1}}
 

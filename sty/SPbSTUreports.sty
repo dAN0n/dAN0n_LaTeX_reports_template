@@ -1,7 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{SPbSTUreports}[03/15/2016 SPbSTU reports template v3]
-
-% Не приспособлен для использования с XeTeX!!!
+\ProvidesPackage{SPbSTUreports}[03/28/2016 SPbSTU reports template v4]
 
 % Проверенные конфигурации:
 % Windows+MiKTeX 2.9+pdfLaTeX+PSCyr (устанавливается отдельно)
@@ -9,7 +7,6 @@
 % Ссылка на скрипт для установки TeXLive 2015: https://github.com/scottkosty/install-tl-ubuntu
 
 % ВОЗМОЖНЫЕ ДАЛЬНЕЙШИЕ УЛУЧШЕНИЯ:
-% Поддержка XeTeX
 % Проверка и настройка для других конфигураций (выяснить алгоритм для TeXLive 2013/Debian)
 
 %% УВЕЛИЧЕНИЕ ФУНКЦИОНАЛЬНОСТИ LaTeX %%
@@ -17,7 +14,19 @@
 	\RequirePackage{ifthen}						% Условия
 	\RequirePackage{etoolbox}					% Условия и защита fragile команд
 	\RequirePackage{xargs}						% Несколько опциональных аргументов
+	\RequirePackage{iftex}						% Выбор движка
 	% \newcommandx*{\su}[2][1=x, 2=y]{$#1+#2$}	% Пример
+
+	\newif\ifxetexorluatex						% определяем новый условный оператор
+	\ifXeTeX
+		\xetexorluatextrue
+	\else
+		\ifLuaTeX
+			\xetexorluatextrue
+		\else
+			\xetexorluatexfalse
+		\fi
+	\fi
 
 %% БАЗОВЫЕ ПАКЕТЫ %%
 
@@ -30,12 +39,29 @@
 		bottom=15mm,
 	}
 	\RequirePackage{mmap}						% Поиск и копирование в pdf
-	\RequirePackage[T2A,T1]{fontenc}			% Кодировка шрифтов
-	\RequirePackage[utf8]{inputenc}				% Для поддержки кириллицы
-	\RequirePackage[english,russian]{babel}		% Для русского оформления
-	\selectlanguage{russian}					% Язык для babel
-	\RequirePackage[pdftex]{graphicx}			% Для создания pdf
-	\pdfcompresslevel=9							% pdf сжатие
+
+	\ifxetexorluatex
+		\RequirePackage[no-math]{fontspec}						% Не использовать шрифты для математики
+		\RequirePackage{xunicode}
+		\RequirePackage{xltxtra}
+		\RequirePackage{polyglossia}							% Загружает пакет многоязыковой вёрстки
+		\setdefaultlanguage[spelling=modern]{russian}			% Устанавливает главный язык документа
+		\setkeys{russian}{babelshorthands=true}
+		\setotherlanguage{english} 								% Объявляет второй язык документа
+		\defaultfontfeatures{Ligatures={TeX},%
+			Renderer=Basic,Mapping=tex-text}					% Свойства шрифтов по умолчанию
+		\let\providelength\relax								% Исправление проблемы с этими командами
+		\let\providecounter\relax
+		\RequirePackage{graphicx}								% Для создания pdf
+	\else
+		\RequirePackage[T2A,T1]{fontenc}						% Кодировка шрифтов
+		\RequirePackage[utf8]{inputenc}							% Для поддержки кириллицы
+		\RequirePackage[english,russian]{babel}					% Для русского оформления
+		\selectlanguage{russian}								% Язык для babel
+		\RequirePackage[pdftex]{graphicx}						% Для создания pdf
+		\pdfcompresslevel=9										% pdf сжатие
+	\fi
+
 	\RequirePackage{indentfirst}				% Отступ (красная строка)
 	\graphicspath{{img/}}						% Папка для изображений	
 	\RequirePackage{newclude}					% include*{} убирает \clearpage
@@ -70,6 +96,10 @@
 
 	\RequirePackage{soulutf8}					% Для пакета soul
 	\RequirePackage{soul} 						% Зачеркивания и прочие модификаторы текста
+	\ifxetexorluatex
+		\newfontfamily\SOUL@tt{cmuntt.otf}
+	\else
+	\fi
 	\RequirePackage{cancel} 					% Зачеркивания (диагональные)
 	\RequirePackage{enumerate}					% Расширенные возможности перечислений
 	\RequirePackage{enumitem}					% Отступы между пунктами списка
@@ -79,18 +109,21 @@
 	\widowpenalty=10000							% и после последней строки абзаца
 	\setlength{\parindent}{2.5em}				% Абзацный отступ (5 знаков)
 
-	\RequirePackage[%
-		activate={true,nocompatibility},
-		final,
-		stretch=10,
-		shrink=10,
-		kerning=true,
-		tracking=true,
-		spacing=true
-	]{microtype}								% Улучшение расположения текста
-	\SetTracking{encoding={*}, shape=sc}{40}	% Улучшение пробелов (microtype)
+	\ifxetexorluatex
+	\else
+		\RequirePackage[%
+			activate={true,nocompatibility},
+			final,
+			stretch=10,
+			shrink=10,
+			kerning=true,
+			tracking=true,
+			spacing=true
+		]{microtype}											% Улучшение расположения текста
+		\SetTracking{encoding={*}, shape=sc}{40}				% Улучшение пробелов (microtype)
+	\fi
 
-	\renewcommand{\labelitemi}{\normalfont\bfseries{--}}	% Дефис для ненумерованных списков
+	\renewcommand{\labelitemi}{\normalfont\bfseries{--}}		% Дефис для ненумерованных списков
 	\setlist{
 		topsep=0pt,
 		itemsep=0ex,
@@ -118,6 +151,7 @@
 %% ЛИСТИНГИ %%
 
 	\RequirePackage{listings}					% Листинги
+	\renewcommand{\lstlistingname}{Листинг}
 	\RequirePackage{verbatim}					% Для простых листингов
 
 %% ЗАГОЛОВКИ %%
@@ -268,7 +302,11 @@
 		urlbordercolor=blue,
 		pdfborderstyle={/S/U/W 0.5}
 	]{hyperref}									% Гиперссылки
-	\RequirePackage[russian]{sty/cleveref}		% Умные указания страниц
+	\ifxetexorluatex
+		\RequirePackage{sty/cleveref}			% Умные указания страниц
+	\else
+		\RequirePackage[russian]{sty/cleveref}	% Умные указания страниц
+	\fi
 	\let\globcount\newcount						% Фикс для autonum
 	\RequirePackage{autonum}					% Умная нумерация формул
 
@@ -284,10 +322,15 @@
 	\Crefname{listing}{Листинг}{Листинги}
 
 	% Настройки varioref
-	\addto\extrasrussian{%						% Исправляет странную подпись
+	\ifxetexorluatex
 		\renewcommand\reftextbefore{на предыдущей странице}%
 		\renewcommand\reftextcurrent{}
-	}
+	\else
+		\addto\extrasrussian{%					% Исправляет странную подпись
+			\renewcommand\reftextbefore{на предыдущей странице}%
+			\renewcommand\reftextcurrent{}
+		}
+	\fi
 	\renewcommand{\vref}[1]{\cref{#1} \vpageref{#1}}
 	\renewcommand{\Vref}[1]{\Cref{#1} \vpageref{#1}}
 
@@ -334,9 +377,13 @@
 
 	\newcommand*{\toc}[1][СОДЕРЖАНИЕ]{%
 		\renewcommand\contentsname{#1}
-		\microtypesetup{protrusion=false}		% Отключение висячей пунктуации (microtype)
-		\tableofcontents
-		\microtypesetup{protrusion=true}		% Включение висячей пунктуации (microtype)
+		\ifxetexorluatex
+			\tableofcontents
+		\else
+			\microtypesetup{protrusion=false}	% Отключение висячей пунктуации (microtype)
+			\tableofcontents
+			\microtypesetup{protrusion=true}	% Включение висячей пунктуации (microtype)
+		\fi
 		\clearpage
 	}
 
@@ -345,9 +392,13 @@
 		\newpage
 		\phantomsection
 		\addcontentsline{toc}{section}{#1}
-		\microtypesetup{protrusion=false}		% Отключение висячей пунктуации (microtype)
-		\listoffigures
-		\microtypesetup{protrusion=true}		% Включение висячей пунктуации (microtype)
+		\ifxetexorluatex
+			\listoffigures
+		\else
+			\microtypesetup{protrusion=false}	% Отключение висячей пунктуации (microtype)
+			\listoffigures
+			\microtypesetup{protrusion=true}	% Включение висячей пунктуации (microtype)
+		\fi
 		\clearpage
 	}
 
@@ -356,9 +407,13 @@
 		\newpage
 		\phantomsection
 		\addcontentsline{toc}{section}{#1}
-		\microtypesetup{protrusion=false}		% Отключение висячей пунктуации (microtype)
-		\listoftables
-		\microtypesetup{protrusion=true}		% Включение висячей пунктуации (microtype)
+		\ifxetexorluatex
+			\listoftables
+		\else
+			\microtypesetup{protrusion=false}	% Отключение висячей пунктуации (microtype)
+			\listoftables
+			\microtypesetup{protrusion=true}	% Включение висячей пунктуации (microtype)
+		\fi
 		\clearpage
 	}
 
@@ -368,9 +423,13 @@
 		\newpage
 		\phantomsection
 		\addcontentsline{toc}{section}{#1}
-		\microtypesetup{protrusion=false}		% Отключение висячей пунктуации (microtype)
-		\lstlistoflistings
-		\microtypesetup{protrusion=true}		% Включение висячей пунктуации (microtype)
+		\ifxetexorluatex
+			\lstlistoflistings
+		\else
+			\microtypesetup{protrusion=false}	% Отключение висячей пунктуации (microtype)
+			\lstlistoflistings
+			\microtypesetup{protrusion=true}	% Включение висячей пунктуации (microtype)
+		\fi
 		\clearpage
 	}
 
@@ -544,76 +603,93 @@
 %% НАСТРОЙКИ ПАКЕТА LISTINGS %%
 
 	% Костыли для русского языка в listings
-	\lstset{
-    	extendedchars=true,
-		keepspaces=true,
-		literate={а}{{\selectfont\char224}}1
-		{б}{{\selectfont\char225}}1
-		{в}{{\selectfont\char226}}1
-		{г}{{\selectfont\char227}}1
-		{д}{{\selectfont\char228}}1
-		{е}{{\selectfont\char229}}1
-		{ё}{{\"e}}1
-		{ж}{{\selectfont\char230}}1
-		{з}{{\selectfont\char231}}1
-		{и}{{\selectfont\char232}}1
-		{й}{{\selectfont\char233}}1
-		{к}{{\selectfont\char234}}1
-		{л}{{\selectfont\char235}}1
-		{м}{{\selectfont\char236}}1
-		{н}{{\selectfont\char237}}1
-		{о}{{\selectfont\char238}}1
-		{п}{{\selectfont\char239}}1
-		{р}{{\selectfont\char240}}1
-		{с}{{\selectfont\char241}}1
-		{т}{{\selectfont\char242}}1
-		{у}{{\selectfont\char243}}1
-		{ф}{{\selectfont\char244}}1
-		{х}{{\selectfont\char245}}1
-		{ц}{{\selectfont\char246}}1
-		{ч}{{\selectfont\char247}}1
-		{ш}{{\selectfont\char248}}1
-		{щ}{{\selectfont\char249}}1
-		{ъ}{{\selectfont\char250}}1
-		{ы}{{\selectfont\char251}}1
-		{ь}{{\selectfont\char252}}1
-		{э}{{\selectfont\char253}}1
-		{ю}{{\selectfont\char254}}1
-		{я}{{\selectfont\char255}}1
-		{А}{{\selectfont\char192}}1
-		{Б}{{\selectfont\char193}}1
-		{В}{{\selectfont\char194}}1
-		{Г}{{\selectfont\char195}}1
-		{Д}{{\selectfont\char196}}1
-		{Е}{{\selectfont\char197}}1
-		{Ё}{{\"E}}1
-		{Ж}{{\selectfont\char198}}1
-		{З}{{\selectfont\char199}}1
-		{И}{{\selectfont\char200}}1
-		{Й}{{\selectfont\char201}}1
-		{К}{{\selectfont\char202}}1
-		{Л}{{\selectfont\char203}}1
-		{М}{{\selectfont\char204}}1
-		{Н}{{\selectfont\char205}}1
-		{О}{{\selectfont\char206}}1
-		{П}{{\selectfont\char207}}1
-		{Р}{{\selectfont\char208}}1
-		{С}{{\selectfont\char209}}1
-		{Т}{{\selectfont\char210}}1
-		{У}{{\selectfont\char211}}1
-		{Ф}{{\selectfont\char212}}1
-		{Х}{{\selectfont\char213}}1
-		{Ц}{{\selectfont\char214}}1
-		{Ч}{{\selectfont\char215}}1
-		{Ш}{{\selectfont\char216}}1
-		{Щ}{{\selectfont\char217}}1
-		{Ъ}{{\selectfont\char218}}1
-		{Ы}{{\selectfont\char219}}1
-		{Ь}{{\selectfont\char220}}1
-		{Э}{{\selectfont\char221}}1
-		{Ю}{{\selectfont\char222}}1
-		{Я}{{\selectfont\char223}}1
-	}
+	\ifxetexorluatex
+		\lstset{
+			extendedchars=true,
+			keepspaces=true,
+		}
+	\else
+		\lstset{
+			extendedchars=true,
+			keepspaces=true,
+			literate={а}{{\selectfont\char224}}1
+			{б}{{\selectfont\char225}}1
+			{в}{{\selectfont\char226}}1
+			{г}{{\selectfont\char227}}1
+			{д}{{\selectfont\char228}}1
+			{е}{{\selectfont\char229}}1
+			{ё}{{\"e}}1
+			{ж}{{\selectfont\char230}}1
+			{з}{{\selectfont\char231}}1
+			{и}{{\selectfont\char232}}1
+			{й}{{\selectfont\char233}}1
+			{к}{{\selectfont\char234}}1
+			{л}{{\selectfont\char235}}1
+			{м}{{\selectfont\char236}}1
+			{н}{{\selectfont\char237}}1
+			{о}{{\selectfont\char238}}1
+			{п}{{\selectfont\char239}}1
+			{р}{{\selectfont\char240}}1
+			{с}{{\selectfont\char241}}1
+			{т}{{\selectfont\char242}}1
+			{у}{{\selectfont\char243}}1
+			{ф}{{\selectfont\char244}}1
+			{х}{{\selectfont\char245}}1
+			{ц}{{\selectfont\char246}}1
+			{ч}{{\selectfont\char247}}1
+			{ш}{{\selectfont\char248}}1
+			{щ}{{\selectfont\char249}}1
+			{ъ}{{\selectfont\char250}}1
+			{ы}{{\selectfont\char251}}1
+			{ь}{{\selectfont\char252}}1
+			{э}{{\selectfont\char253}}1
+			{ю}{{\selectfont\char254}}1
+			{я}{{\selectfont\char255}}1
+			{А}{{\selectfont\char192}}1
+			{Б}{{\selectfont\char193}}1
+			{В}{{\selectfont\char194}}1
+			{Г}{{\selectfont\char195}}1
+			{Д}{{\selectfont\char196}}1
+			{Е}{{\selectfont\char197}}1
+			{Ё}{{\"E}}1
+			{Ж}{{\selectfont\char198}}1
+			{З}{{\selectfont\char199}}1
+			{И}{{\selectfont\char200}}1
+			{Й}{{\selectfont\char201}}1
+			{К}{{\selectfont\char202}}1
+			{Л}{{\selectfont\char203}}1
+			{М}{{\selectfont\char204}}1
+			{Н}{{\selectfont\char205}}1
+			{О}{{\selectfont\char206}}1
+			{П}{{\selectfont\char207}}1
+			{Р}{{\selectfont\char208}}1
+			{С}{{\selectfont\char209}}1
+			{Т}{{\selectfont\char210}}1
+			{У}{{\selectfont\char211}}1
+			{Ф}{{\selectfont\char212}}1
+			{Х}{{\selectfont\char213}}1
+			{Ц}{{\selectfont\char214}}1
+			{Ч}{{\selectfont\char215}}1
+			{Ш}{{\selectfont\char216}}1
+			{Щ}{{\selectfont\char217}}1
+			{Ъ}{{\selectfont\char218}}1
+			{Ы}{{\selectfont\char219}}1
+			{Ь}{{\selectfont\char220}}1
+			{Э}{{\selectfont\char221}}1
+			{Ю}{{\selectfont\char222}}1
+			{Я}{{\selectfont\char223}}1
+		}
+	\fi
+
+	\begingroup
+		\catcode0=12 %
+		\g@addto@macro\lst@DefEC{%
+			\lst@CCECUse\lst@ProcessLetter
+			абвгдеёжзийклмнопрстуфхцчшщъыьэюя%	% Добавление русских символов
+			АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ%
+			^^00%								% Маркер завершения
+		}%
+	\endgroup
 
 	% Общие настройки
 	\lstset{
@@ -723,5 +799,90 @@
 	\RequirePackage{todonotes}
 	\reversemarginpar
 	\setlength{\marginparwidth}{1.6cm}
+
+%% КОСТЫЛЬ ДЛЯ ПАКЕТА CLEVEREF (XETEX) %%
+
+	\ifxetexorluatex
+		\newcommand{\cyr}[0]{}
+		\renewcommand{\cyra}[0]{а}
+		\renewcommand{\cyrb}[0]{б}
+		\renewcommand{\cyrv}[0]{в}
+		\renewcommand{\cyrg}[0]{г}
+		\renewcommand{\cyrd}[0]{д}
+		\renewcommand{\cyre}[0]{е}
+		\renewcommand{\cyryo}[0]{ё}
+		\renewcommand{\cyrzh}[0]{ж}
+		\renewcommand{\cyrz}[0]{з}
+		\renewcommand{\cyri}[0]{и}
+		\renewcommand{\cyrishrt}[0]{й}
+		\renewcommand{\cyrk}[0]{к}
+		\renewcommand{\cyrl}[0]{л}
+		\renewcommand{\cyrm}[0]{м}
+		\renewcommand{\cyrn}[0]{н}
+		\renewcommand{\cyro}[0]{о}
+		\renewcommand{\cyrp}[0]{п}
+		\renewcommand{\cyrr}[0]{р}
+		\renewcommand{\cyrs}[0]{с}
+		\renewcommand{\cyrt}[0]{т}
+		\renewcommand{\cyru}[0]{у}
+		\renewcommand{\cyrf}[0]{ф}
+		\renewcommand{\cyrh}[0]{х}
+		\renewcommand{\cyrc}[0]{ц}
+		\renewcommand{\cyrch}[0]{ч}
+		\renewcommand{\cyrsh}[0]{ш}
+		\renewcommand{\cyrshch}[0]{щ}
+		\renewcommand{\cyrsftsn}[0]{ь}
+		\renewcommand{\cyrery}[0]{ы}
+		\renewcommand{\cyrhrdsn}[0]{ъ}
+		\renewcommand{\cyrerev}[0]{э}
+		\renewcommand{\cyryu}[0]{ю}
+		\renewcommand{\cyrya}[0]{я}
+
+		\renewcommand{\CYRA}[0]{А}
+		\renewcommand{\CYRB}[0]{Б}
+		\renewcommand{\CYRV}[0]{В}
+		\renewcommand{\CYRG}[0]{Г}
+		\renewcommand{\CYRD}[0]{Д}
+		\renewcommand{\CYRE}[0]{Е}
+		\renewcommand{\CYRYO}[0]{Ё}
+		\renewcommand{\CYRZH}[0]{Ж}
+		\renewcommand{\CYRZ}[0]{З}
+		\renewcommand{\CYRI}[0]{И}
+		\renewcommand{\CYRY}[0]{Й}
+		\renewcommand{\CYRK}[0]{К}
+		\renewcommand{\CYRL}[0]{Л}
+		\renewcommand{\CYRM}[0]{М}
+		\renewcommand{\CYRN}[0]{Н}
+		\renewcommand{\CYRO}[0]{О}
+		\renewcommand{\CYRP}[0]{П}
+		\renewcommand{\CYRR}[0]{Р}
+		\renewcommand{\CYRS}[0]{С}
+		\renewcommand{\CYRT}[0]{Т}
+		\renewcommand{\CYRU}[0]{У}
+		\renewcommand{\CYRF}[0]{Ф}
+		\renewcommand{\CYRH}[0]{Х}
+		\renewcommand{\CYRC}[0]{Ц}
+		\renewcommand{\CYRCH}[0]{Ч}
+		\renewcommand{\CYRSH}[0]{Ш}
+		\renewcommand{\CYRSHCH}[0]{Щ}
+		\renewcommand{\CYRSFTSN}[0]{Ь}
+		\renewcommand{\CYRERY}[0]{Ы}
+		\renewcommand{\CYRHRDSN}[0]{Ъ}
+		\renewcommand{\CYREREV}[0]{Э}
+		\renewcommand{\CYRYU}[0]{Ю}
+		\renewcommand{\CYRYA}[0]{Я}
+	\else
+	\fi
+
+%% ДОБАВЛЕНИЕ BABEL-LIKE КАВЫЧЕК ДЛЯ POLYGLOSSIA %%
+%% ДОБАВЛЕНО В КОНЦЕ ИЗ-ЗА ПЛОХОЙ ПОДСВЕТКИ СИНТАКСИСА В ТЕКСТОВОМ РЕДАКТОРЕ xD %%
+
+	\ifxetexorluatex
+		\declare@shorthand{russian}{"`}{„}
+		\declare@shorthand{russian}{"'}{“}
+		\declare@shorthand{russian}{"<}{«}
+		\declare@shorthand{russian}{">}{»}
+	\else
+	\fi
 
 \endinput

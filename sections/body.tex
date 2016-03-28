@@ -3,7 +3,7 @@
 
 \subsection{Пример картинки}
 
-Рандомный граф (\vref{pic:graph}). 
+Рандомный граф (\ref{pic:graph}). 
 
 Для насильной привязки к месту использовать опцию \textbf{[H]}. \cite{float}
 
@@ -18,8 +18,8 @@
 
 Пакет \emph{listings} имеет кучу мелких и не очень проблем, из-за которых пропадает желание его использовать.
 
-Описание схемы на языке VHDL приведено в листинге~\vref{lst:VHDL}.
-См.~\vref{app:matlab} для ещё одного примера.
+Описание схемы на языке VHDL приведено в листинге~\ref{lst:VHDL}.
+См.~\ref{app:matlab} для ещё одного примера.
 
 \lstset{style=vhdl}
 \begin{lstlisting}[label=lst:VHDL,caption=Описание схемы]
@@ -45,7 +45,7 @@ end rtl;
 
 \subsection{Картинки с подкартинками}
 
-Данные о максимальной частоте и минимальных временных задержках представлены на \vref{pic:base} (а так же \vref{pic:fmax} и \vref{pic:clk}). \cite{subcap}
+Данные о максимальной частоте и минимальных временных задержках представлены на \ref{pic:base} (а так же \ref{pic:fmax} и \ref{pic:clk}). \cite{subcap}
 
 \begin{figure}[H]
 	\begin{subfigure}{.4\linewidth}
@@ -66,7 +66,7 @@ end rtl;
 
 \subsection{Длинная подпись}
 
-Результат моделирования синтезированной схемы представлен на \vref{pic:modeling}. 
+Результат моделирования синтезированной схемы представлен на \ref{pic:modeling}. 
 
 \begin{figure}[H]
 \centering
@@ -75,7 +75,7 @@ end rtl;
 \label{pic:modeling}
 \end{figure}
 
-Другой пример (см. \vref{tab:task}). 
+Другой пример (см. \ref{tab:task}). 
 
 Обратите внимание на расположение \string\caption\{\} снизу и при этом принудительное расположение подписи сверху с выравниванием вправо.
 
@@ -96,7 +96,7 @@ end rtl;
 
 \subsection{Русские буквы в формулах}
 
-Пока только такой вариант \vref{equ:rus} (можно использовать просто \string\text\{\}).
+Пока только такой вариант \ref{equ:rus} (можно использовать просто \string\text\{\}).
 
 \begin{equation}
 	\sum_{\textup{Какая-то лажа}}^{\textit{Какой-то курсив}} \textbf{Какой-то жирнич}
@@ -145,7 +145,7 @@ end rtl;
 
 \subsection{Таблица с картинкой}
 
-Пример в \vref{tab:rs-map}.
+Пример в \ref{tab:rs-map}.
 
 \begin{table}[ht]
 	\centering
@@ -160,7 +160,7 @@ end rtl;
 
 \subsection{Таблица с склееными и битыми ячейками}
 
-Пример в \vref{tab:energy}.
+Пример в \ref{tab:energy}.
 
 Для склеивания строк требуется пакет \emph{multirow}. \cite{multirow}
 
@@ -183,7 +183,7 @@ end rtl;
 
 Очень сложный метод, надо очень хорошо знать, что делаешь, иначе можно потратить день и не добиться результата. Зато в итоге можно получить качественное векторное изображение. В документации \emph{1200} страниц!!! \cite{pgf}
 
-Пример на \vref{gr:energy}.
+Пример на \ref{gr:energy}.
 
 \begin{figure}[H]
 	\begin{subfigure}{.5\linewidth}
@@ -300,7 +300,7 @@ end rtl;
 	\label{equ:kung}
 \end{equation}
 
-Подставим в формулу \vref{equ:kung}:
+Подставим в формулу \ref{equ:kung}:
 
 \begin{equation}
 	\left\{\begin{aligned}
@@ -321,7 +321,7 @@ end rtl;
 
 Безумно неудобно и не стоит затраченных усилий. Лучше, быстрее и выгоднее воспользоваться \emph{yEd} или что-нибудь в таком духе и вставить картинку. Есть способ делать удобнее с Lua\TeX, но Lua\TeX~до сих пор не имеет официального релиза, поэтому пока не рекомендую. \\
 
-Наибольший путь $1-2-4-5-6-7-8$ с весом $39$ представлен на \vref{pic:graph_max}.
+Наибольший путь $1-2-4-5-6-7-8$ с весом $39$ представлен на \ref{pic:graph_max}.
 
 \begin{figure}[H]
 	\centering
@@ -484,7 +484,7 @@ $\begin{aligned}
 \end{longtable}
 
 \subsection{Обтекаемые рисунки/таблицы}
-Также украдено с курса, упомянутого в \vref{subsec:long}. ~\\
+Также украдено с курса, упомянутого в \ref{subsec:long}. ~\\
 
 \begin{wrapfigure}{l}{0.5\linewidth}
 	\includegraphics[width=\linewidth]{rs-inst1}

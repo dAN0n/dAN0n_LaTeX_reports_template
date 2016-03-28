@@ -1,7 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{SPbSTUreports}[03/15/2016 SPbSTU reports template v3]
-
-% Не приспособлен для использования с XeTeX!!!
+\ProvidesPackage{SPbSTUreports}[03/28/2016 SPbSTU reports template v4]
 
 % Проверенные конфигурации:
 % Windows+MiKTeX 2.9+pdfLaTeX+PSCyr (устанавливается отдельно)
@@ -9,7 +7,6 @@
 % Ссылка на скрипт для установки TeXLive 2015: https://github.com/scottkosty/install-tl-ubuntu
 
 % ВОЗМОЖНЫЕ ДАЛЬНЕЙШИЕ УЛУЧШЕНИЯ:
-% Поддержка XeTeX
 % Проверка и настройка для других конфигураций (выяснить алгоритм для TeXLive 2013/Debian)
 
 %% УВЕЛИЧЕНИЕ ФУНКЦИОНАЛЬНОСТИ LaTeX %%
@@ -45,10 +42,14 @@
 
 	\ifxetexorluatex
 		\RequirePackage[no-math]{fontspec}						% Не использовать шрифты для математики
+		\RequirePackage{xunicode}
+		\RequirePackage{xltxtra}
 		\RequirePackage{polyglossia}							% Загружает пакет многоязыковой вёрстки
 		\setdefaultlanguage[spelling=modern]{russian}			% Устанавливает главный язык документа
+		\setkeys{russian}{babelshorthands=true}
 		\setotherlanguage{english} 								% Объявляет второй язык документа
-		\defaultfontfeatures{Ligatures={TeX},Renderer=Basic}	% Свойства шрифтов по умолчанию
+		\defaultfontfeatures{Ligatures={TeX},%
+			Renderer=Basic,Mapping=tex-text}					% Свойства шрифтов по умолчанию
 		\let\providelength\relax								% Исправление проблемы с этими командами
 		\let\providecounter\relax
 		\RequirePackage{graphicx}								% Для создания pdf
@@ -870,6 +871,17 @@
 		\renewcommand{\CYREREV}[0]{Э}
 		\renewcommand{\CYRYU}[0]{Ю}
 		\renewcommand{\CYRYA}[0]{Я}
+	\else
+	\fi
+
+%% ДОБАВЛЕНИЕ BABEL-LIKE КАВЫЧЕК ДЛЯ POLYGLOSSIA %%
+%% ДОБАВЛЕНО В КОНЦЕ ИЗ-ЗА ПЛОХОЙ ПОДСВЕТКИ СИНТАКСИСА В ТЕКСТОВОМ РЕДАКТОРЕ xD %%
+
+	\ifxetexorluatex
+		\declare@shorthand{russian}{"`}{„}
+		\declare@shorthand{russian}{"'}{“}
+		\declare@shorthand{russian}{"<}{«}
+		\declare@shorthand{russian}{">}{»}
 	\else
 	\fi
 

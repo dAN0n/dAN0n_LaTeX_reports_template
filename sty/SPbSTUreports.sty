@@ -810,6 +810,22 @@
 	\reversemarginpar
 	\setlength{\marginparwidth}{1.6cm}
 
+%% ДОБАВЛЕНИЕ МЕТАДАННЫХ В ТЕГИ PDF ФАЙЛА %%
+
+	\AtBeginDocument{
+		\ifthenelse{\equal{\@studentt}{\texttt{\string\studentt\{\}}}}{
+			\newcommand*{\@metadataauthor}{\@student}
+		}{
+			\newcommand*{\@metadataauthor}{\@student, \@studentt}
+		}
+
+		\hypersetup{
+			pdftitle={\@theme},
+			pdfsubject={\@lessontype},
+			pdfauthor={\@metadataauthor},
+		}
+	}
+
 %% КОСТЫЛЬ ДЛЯ ПАКЕТА CLEVEREF (XETEX) %%
 
 	\ifxetexorluatex

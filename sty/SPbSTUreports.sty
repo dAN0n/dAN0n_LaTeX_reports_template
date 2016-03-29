@@ -17,7 +17,7 @@
 	\RequirePackage{iftex}						% Выбор движка
 	% \newcommandx*{\su}[2][1=x, 2=y]{$#1+#2$}	% Пример
 
-	\newif\ifxetexorluatex						% определяем новый условный оператор
+	\newif\ifxetexorluatex						% Определяем новый условный оператор
 	\ifXeTeX
 		\xetexorluatextrue
 	\else
@@ -42,15 +42,15 @@
 
 	\ifxetexorluatex
 		\RequirePackage[no-math]{fontspec}						% Не использовать шрифты для математики
-		\RequirePackage{xunicode}
-		\RequirePackage{xltxtra}
+		\RequirePackage{xunicode}								% Доступ к разным черточкам для букв
+		\RequirePackage{xltxtra}								% Обработка логотипов \LaTeX и т.д.
 		\RequirePackage{polyglossia}							% Загружает пакет многоязыковой вёрстки
 		\setdefaultlanguage[spelling=modern]{russian}			% Устанавливает главный язык документа
-		\setkeys{russian}{babelshorthands=true}
+		\setkeys{russian}{babelshorthands=true}					% babel-like пунктуация
 		\setotherlanguage{english} 								% Объявляет второй язык документа
 		\defaultfontfeatures{Ligatures={TeX},%
 			Renderer=Basic,Mapping=tex-text}					% Свойства шрифтов по умолчанию
-		\let\providelength\relax								% Исправление проблемы с этими командами
+		\let\providelength\relax								% Исправление проблем с этими командами
 		\let\providecounter\relax
 		\RequirePackage{graphicx}								% Для создания pdf
 	\else
@@ -97,7 +97,7 @@
 	\RequirePackage{soulutf8}					% Для пакета soul
 	\RequirePackage{soul} 						% Зачеркивания и прочие модификаторы текста
 	\ifxetexorluatex
-		\newfontfamily\SOUL@tt{cmuntt.otf}
+		\newfontfamily\SOUL@tt{cmuntt.otf}		% Исправление проблемы с пакетом soul в XeTeX
 	\else
 	\fi
 	\RequirePackage{cancel} 					% Зачеркивания (диагональные)
@@ -135,23 +135,31 @@
 
 	% Команда \wordfont включает шрифты PSCyr, если они установлены
 	% Здесь устанавливается набор Times New Roman + Arial + Courier New
+	% Для XeTeX включает только шрифт математики
 
-	\newcommand*{\wordfont}{%
-		\IfFileExists{pscyr.sty}{%
-			% Математика (возможно, придется обновить MiKTeX)
+	\ifxetexorluatex
+		\newcommand*{\wordfont}{%
+			% Математика Times New Roman стиля (возможно, придется обновить MiKTeX)
 			\IfFileExists{newtxmath.sty}{\RequirePackage{newtxmath}}
+		}
+	\else
+		\newcommand*{\wordfont}{%
+			\IfFileExists{pscyr.sty}{%
+				% Математика Times New Roman стиля (возможно, придется обновить MiKTeX)
+				\IfFileExists{newtxmath.sty}{\RequirePackage{newtxmath}}
 
-			\RequirePackage{pscyr}
-			\renewcommand{\rmdefault}{ftm}
-			\renewcommand{\sfdefault}{far}
-			\renewcommand{\ttdefault}{fcr}
-		}{}
-	}
+				\RequirePackage{pscyr}
+				\renewcommand{\rmdefault}{ftm}
+				\renewcommand{\sfdefault}{far}
+				\renewcommand{\ttdefault}{fcr}
+			}{}
+		}
+	\fi
 
 %% ЛИСТИНГИ %%
 
 	\RequirePackage{listings}					% Листинги
-	\renewcommand{\lstlistingname}{Листинг}
+	\renewcommand{\lstlistingname}{Листинг}		% Исправление подписи листинга для XeTeX
 	\RequirePackage{verbatim}					% Для простых листингов
 
 %% ЗАГОЛОВКИ %%
@@ -238,7 +246,7 @@
 
 	\RequirePackage{multirow}					% Для объединения строк
 	\RequirePackage{multicol}					% Несколько колонок (не только для таблиц)
-	\RequirePackage{tabularx}					% Окружение для использования опции x для подгона ширины столбца
+	\RequirePackage{tabularx}					% Окружение c опцией x для подгона ширины столбца
 	\RequirePackage{tabulary}					% Окружение для выравнивания по высоте
 	\RequirePackage{spreadtab}					% Окружение с именами ячеек
 	\RequirePackage{array}						% Новые типы столбцов
@@ -265,7 +273,7 @@
 
 %% КАРТИНКИ %%
 
-	\RequirePackage{epstopdf}					% Конвертация eps картинок в pdf
+	\RequirePackage{epstopdf}					% Конвертация eps картинок в pdf (работает плохо)
 	\epstopdfsetup{update}						% Обновляет pdf только при обновлении eps
 
 	\captionsetup[figure]{justification=centering}
@@ -279,7 +287,7 @@
 
 %% ЦВЕТОВАЯ ПАЛИТРА %%
 
-	\RequirePackage{xcolor}						% Управление цветом
+	\RequirePackage{xcolor}						% Управление цветами
 
 	\definecolor{mlgreen}{RGB}{28,172,0}
 	\definecolor{mllilas}{RGB}{170,55,241}
@@ -438,9 +446,9 @@
 	% Используйте \maketitle для вызова, при сборке без необходимых команд в преамбуле
 	% они будут отображены на листе.
 	% Дополнительные команды:
-	% \titleright{} для сдвига области имен
-	% \variant[delimiter]{number} для номера варианта
 	% \faculty{} для отображения факультета/института
+	% \variant[delimiter]{number} для номера варианта
+	% \titleright{} для сдвига области имен
 
 	\newcommand*{\university}[1]{\gdef\@university{\protecting{#1}}}
 	\newcommand*{\@university}{\texttt{\string\university\{\}}}
@@ -574,7 +582,7 @@
 	}
 
 	% Решение проблемы с "Undefined control sequence"
-	% Взято отсюда: http://tex.stackexchange.com/questions/41649/how-to-make-appendix-and-hyperref-packages-work-together-with-cyrillic-non-asci
+	% Источник: http://tex.stackexchange.com/questions/41649/how-to-make-appendix-and-hyperref-packages-work-together-with-cyrillic-non-asci
 	\let\oriAlph\Alph
 	\let\orialph\alph
 	\renewcommand{\@resets@pp}{\par
@@ -685,7 +693,7 @@
 		\catcode0=12 %
 		\g@addto@macro\lst@DefEC{%
 			\lst@CCECUse\lst@ProcessLetter
-			абвгдеёжзийклмнопрстуфхцчшщъыьэюя%	% Добавление русских символов
+			абвгдеёжзийклмнопрстуфхцчшщъыьэюя%	% Добавление русских символов (XeTeX)
 			АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ%
 			^^00%								% Маркер завершения
 		}%

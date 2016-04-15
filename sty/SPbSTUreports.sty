@@ -11,6 +11,12 @@
 
 %% УВЕЛИЧЕНИЕ ФУНКЦИОНАЛЬНОСТИ LaTeX %%
 
+	% Скрытие низкоприоритетных предупреждений
+	\RequirePackage{silence}
+	\WarningFilter{latex}{You have requested package}
+	\WarningFilter{hyperref}{Token not allowed in a PDF string}
+	\WarningFilter{microtype}{I cannot find a spacing list for font}
+
 	\RequirePackage{ifthen}						% Условия
 	\RequirePackage{etoolbox}					% Условия и защита fragile команд
 	\RequirePackage{xargs}						% Несколько опциональных аргументов
@@ -38,7 +44,7 @@
 		top=15mm,
 		bottom=15mm,
 	}
-	\RequirePackage{mmap}						% Поиск и копирование в pdf
+	\RequirePackage{cmap}						% Поиск и копирование в pdf
 
 	\ifxetexorluatex
 		\RequirePackage[no-math]{fontspec}						% Не использовать шрифты для математики
@@ -156,6 +162,8 @@
 		}
 	\fi
 
+	\RequirePackage{lmodern}					% Набор шрифтов (на всякий случай)
+
 %% ЛИСТИНГИ %%
 
 	\RequirePackage{listings}					% Листинги
@@ -207,8 +215,7 @@
 	% Исправление неправильного размещения номера страницы в содержании
 	\fancypagestyle{plain}{%
 		\fancyhf{} 								% Очистить все поля
-		\fancyfoot[RO]{\thepage}				% Установка внизу справа на нечетной странице
-		\fancyfoot[RE]{\thepage}				% Установка внизу справа на четной странице
+		\fancyfoot[R]{\thepage}					% Установка внизу справа
 	}
 
 % %% ОБЩЕЕ ДЛЯ КАРТИНОК/ТАБЛИЦ %%
@@ -317,6 +324,8 @@
 	\else
 		\RequirePackage[russian]{sty/cleveref}	% Умные указания страниц
 	\fi
+	% Скрывает предупреждение c etex
+	\expandafter\def\csname ver@etex.sty\endcsname{3000/12/31}
 	\let\globcount\newcount						% Фикс для autonum
 	\RequirePackage{autonum}					% Умная нумерация формул (требует 3 компиляции!!!)
 

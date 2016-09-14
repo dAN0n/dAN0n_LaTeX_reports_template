@@ -137,6 +137,12 @@
 		parsep=0ex
 	}											% Отступы и интервалы
 
+	% Фикс вложенных enumerate (1.2.3, для более глубоких есть \begin{enumerate}[label*=\arabic*.])
+	\renewcommand{\labelenumii}{\theenumii}
+	\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+	\renewcommand{\labelenumiii}{\theenumiii}
+	\renewcommand{\theenumiii}{\theenumii\arabic{enumiii}.}
+
 %% ШРИФТЫ %%
 
 	% Команда \wordfont включает шрифты PSCyr, если они установлены

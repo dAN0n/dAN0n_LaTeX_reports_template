@@ -833,6 +833,26 @@
 		tabsize=2,
 	}
 
+	\lstdefinelanguage
+		[SH51]{Assembler}						% add a "Shell51" dialect of Assembler
+		[x86masm]{Assembler}					% based on the "x86masm" dialect
+		{
+		morekeywords={
+			mov,movx,movc,push,pop,xch,xchd,swap,
+			add,addc,subb,da,inc,dec,mul,div,anl,orl,xrl,clr,cpl,rl,rlc,rr,rrc,setb,
+			jb,jbc,jnb,jc,jnc,ljmp,ajmp,sjmp,jmp,lcall,acall,ret,reti,jz,jnz,jc,jnc,djnz,cjne,
+			MOV,MOVX,MOVC,PUSH,POP,XCH,XCHD,SWAP,
+			ADD,ADDC,SUBB,DA,INC,DEC,MUL,DIV,ANL,ORL,XRL,CLR,CPL,RL,RLC,RR,RRC,SETB,
+			JB,JBC,JNB,JC,JNC,LJMP,AJMP,SJMP,JMP,LCALL,ACALL,RET,RETI,JZ,JNZ,JC,JNC,DJNZ,CJNE,
+		},
+		deletekeywords=[2]{end}
+	}
+
+	\lstdefinestyle{sh51}{
+		language={[SH51]Assembler},
+		tabsize=8,
+	}
+
 %% TODO В ДОКУМЕНТЕ %%
 
 	\RequirePackage{todonotes}
